@@ -7,7 +7,7 @@ export default function Signin() {
     <>
       <Head>
         <title>Sign In</title>
-        <meta name="description" content="Login page dashgo" />
+        <meta name="description" content="Login page dash.io" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Flex w='100vw' h='100vh' align='center' justify='center'>
