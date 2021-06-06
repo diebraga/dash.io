@@ -2,11 +2,11 @@ import { Flex, Button, Stack } from '@chakra-ui/react'
 import { Input } from "../components/Form/Input";
 import Head from 'next/head'
 
-export default function Home() {
+export default function Signin() {
   return (
     <>
       <Head>
-        <title>Home</title>
+        <title>Sign In</title>
         <meta name="description" content="Login page dashgo" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -24,7 +24,7 @@ export default function Home() {
             <Input name='email' label='E-mail' type='email' />
             <Input name='password' label='Password' type='password' />
           </Stack>
-          <Button type='submit' mt='6' colorScheme='pink' size='lg'>
+          <Button type='submit' mt='6' colorScheme='red' size='lg'>
             Enter
           </Button>
         </Flex>
