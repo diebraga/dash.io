@@ -4,7 +4,7 @@ import { Flex, SimpleGrid, Box, Text, theme } from '@chakra-ui/react'
 import { Sidebar } from "../components/Sidebar";
 import Head from 'next/head'
 
-const Grafic =  dynamic(() => import('react-apexcharts'), {
+const Chart =  dynamic(() => import('react-apexcharts'), {
   ssr: false
 })
 
@@ -43,7 +43,6 @@ const options = {
       '2021-03-21T00:00:00:00.000Z',
       '2021-03-22T00:00:00:00.000Z',
       '2021-03-23T00:00:00:00.000Z',
-      '2021-03-24T00:00:00:00.000Z'
     ]
   },
   fill: {
@@ -81,14 +80,14 @@ export default function Dashboard() {
             <Text fontSize='lg' mb='4'>Weekly subscriptions</Text>
             {/*
             // @ts-ignore */}
-            <Grafic options={options} series={series} type='area' height={160}/>
+            <Chart options={options} series={series} type='area' height={160}/>
           </Box>
 
           <Box p='8' bg='gray.800' borderRadius={8} pb='4'>
             <Text fontSize='lg' mb='4'>Opening rate</Text>
             {/*
             // @ts-ignore */}
-            <Grafic options={options} series={series} type='area' height={160}/>
+            <Chart options={options} series={series} type='area' height={160}/>
           </Box>
         </SimpleGrid>
       </Flex>
