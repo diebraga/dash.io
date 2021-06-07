@@ -2,7 +2,7 @@ import { Box, Stack } from '@chakra-ui/react'
 import { PaginationItem } from "./PaginationItem";
 export function Pagination() {
   return (
-    <Stack direction='row' spacing='4' mt='8' justify='space-between' align='center'>
+    <Stack direction={['column', 'row']} spacing='4' mt='8' justify='space-between' align='center'>
       <Box>
         <strong>0</strong> - <strong>10</strong> of <strong>100</strong>
       </Box>

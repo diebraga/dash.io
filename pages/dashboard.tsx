@@ -76,7 +76,7 @@ export default function Dashboard() {
         <Sidebar />
 
         <SimpleGrid gap='4' flex='1' minChildWidth='320px' align='flex-start'>
-          <Box p='8' bg='gray.800' borderRadius={8} pb='4' fontSize='sm'>
+          <Box p={['6', '8']} bg='gray.800' borderRadius={8} pb='4' fontSize='sm'>
             <Text fontSize='lg' mb='4'>Weekly subscriptions</Text>
             {/*
             // @ts-ignore */}
