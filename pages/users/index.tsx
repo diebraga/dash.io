@@ -2,7 +2,8 @@ import { Flex, Button, Box, Text, Heading, Icon, Table, Thead, Tr, Th, Checkbox,
 import { Header } from "../../components/Header";
 import Head from 'next/head'
 import { Sidebar } from "../../components/Sidebar";
-import { RiAddLine, RiContactsLine, RiPencilLine } from "react-icons/ri";
+import { RiAddLine, RiContactsLine, RiEdit2Line } from "react-icons/ri";
+import { Pagination } from '../../components/Pagination';
 
 export default function UserList() {
   return (
@@ -23,7 +24,7 @@ export default function UserList() {
             <Heading as='h2' size='lg' fontSize='lg'><Icon as={RiContactsLine} fontSize='20' mr='4'/>
               Users
             </Heading>
-            <Button as='a' size='sm' fontSize='sm' colorScheme='red' leftIcon={<Icon as={RiAddLine} />}>
+            <Button as='a' cursor='pointer' size='sm' fontSize='sm' colorScheme='red' leftIcon={<Icon as={RiAddLine} />}>
               New user
             </Button>
           </Flex>
@@ -53,10 +54,12 @@ export default function UserList() {
                 <Td>
                   <Button 
                     as='a' 
+                    cursor='pointer'
                     size='sm' 
                     fontSize='sm' 
-                    colorScheme='blackAlpha' 
-                    leftIcon={<Icon as={RiPencilLine} fontSize='17' />}
+                    variant='ghost'
+                    _hover={{ opacity: '0.5' }}
+                    leftIcon={<Icon as={RiEdit2Line} fontSize='17' />}
                   >
                     Edit
                   </Button>
@@ -64,6 +67,7 @@ export default function UserList() {
               </Tr>
             </Tbody>
           </Table>
+          <Pagination />
         </Box>
       </Flex>
     </Box>
