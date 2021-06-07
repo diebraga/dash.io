@@ -1,4 +1,4 @@
-import { Flex, Button, Stack } from '@chakra-ui/react'
+import { Flex, Button, Stack, Text, Center } from '@chakra-ui/react'
 import { Input } from "../components/Form/Input";
 import Head from 'next/head'
 
@@ -21,6 +21,17 @@ export default function Signin() {
           flexDir='column'
         >
           <Stack spacing='4'>
+            <Center>
+              <Text
+                textAlign='center'
+                fontWeight='bold'
+                letterSpacing='tight'
+                fontSize='4xl'
+                w='64'
+              >
+                dash<Text as='span' color='red.500'>.io</Text>
+              </Text>
+            </Center>
             <Input name='email' label='E-mail' type='email' />
             <Input name='password' label='Password' type='password' />
           </Stack>

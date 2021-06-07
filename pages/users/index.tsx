@@ -21,7 +21,7 @@ export default function UserList() {
 
         <Box flex='1' borderRadius={8} bg='gray.800' p='8'>
           <Flex mb='8' justify='space-between' align='center'>
-            <Heading as='h2' size='lg' fontSize='lg'><Icon as={RiContactsLine} fontSize='20' mr='4'/>
+            <Heading as='h2' size='lg' >
               Users
             </Heading>
             <Button as='a' cursor='pointer' size='sm' fontSize='sm' colorScheme='red' leftIcon={<Icon as={RiAddLine} />}>
