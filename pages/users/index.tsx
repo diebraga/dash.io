@@ -10,7 +10,7 @@ export default function UserList(){
     base: false,
     lg: true,
   });
-  
+    
   return (
     <Box>
       <Header />      
@@ -43,7 +43,7 @@ export default function UserList(){
                   <Checkbox colorScheme="red" />
                 </Th>
                 <Th>Usuários</Th>
-                {isWideVersion && <Th>Data de cadastro</Th>}
+                {isWideVersion && <Th>Register date</Th>}
                 <Th width="8"></Th>
               </Tr>
             </Thead>            

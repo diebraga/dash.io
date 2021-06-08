@@ -4,7 +4,7 @@ import { Input } from "../components/Form/Input";
 import Head from 'next/head'
 import React, { useState } from 'react';
 import { RiEyeOffLine, RiEyeLine } from "react-icons/ri";
-import { emailValidation, passwordValidation } from "../components/Validations";
+import { useFormValidation } from '../hooks/FormValidationContext';
 
 type SignFormData = {
   email: string
@@ -12,8 +12,10 @@ type SignFormData = {
 }
 
 export default function Signin() {
-  const { handleSubmit, register, errors } = useForm({ mode: 'all' })
+  const { handleSubmit, register, errors, formState: { isSubmitting } } = useForm({ mode: 'all' })
   const [showPassword, setShowPassword] = useState(false)
+
+  const { emailFormValidation, passwordFormValidation } = useFormValidation()
 
   const handleSignIn: SubmitHandler<SignFormData> = (data) => {
     console.log(data)
@@ -49,14 +51,14 @@ export default function Signin() {
                 dash<Text as='span' color='red.500'>.io</Text>
               </Text>
             </Center>
-            <Input name='email' label='E-mail' type='email' error={errors.email} ref={register(emailValidation)}/>
+            <Input name='email' label='E-mail' type='email' error={errors.email} ref={register(emailFormValidation)}/>
             <InputGroup>
               <Input
                 name='password'
                 label='Password' 
                 error={errors.password}
                 type={showPassword ? 'text' : 'password'} 
-                ref={register(passwordValidation)}
+                ref={register(passwordFormValidation)}
               />
               <InputRightElement width="4.5rem">
                 <IconButton 
@@ -73,7 +75,7 @@ export default function Signin() {
               </InputRightElement>
             </InputGroup>
           </Stack>
-          <Button type='submit' mt='6' colorScheme='red' size='lg'>
+          <Button type='submit' mt='6' colorScheme='red' size='lg' isLoading={isSubmitting}>
             Enter
           </Button>
         </Flex>
