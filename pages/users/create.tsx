@@ -4,8 +4,29 @@ import Head from 'next/head'
 import Link from "next/link";
 import { Sidebar } from "../../components/Sidebar";
 import { Input } from "../../components/Form/Input";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { useFormValidation } from '../../hooks/FormValidationContext';
 
 export default function CreateUser() {
+  const { handleSubmit, register, errors, formState: { isSubmitting } } = useForm({ mode: 'all' })
+  const { 
+    registerPasswordFormValidation, 
+    registerRe_passwordFormValidation, 
+    emailFormValidation,
+    nameFormValidation
+  } = useFormValidation()
+
+  type CreateUserFormData = {
+    name: string
+    email: string
+    password: string
+    re_password: string
+  }
+
+  const handleCreateUser: SubmitHandler<CreateUserFormData> = (data) => {
+    console.log(data)
+  }
+
   return (
     <Box>
       <Head>
@@ -19,19 +40,48 @@ export default function CreateUser() {
       <Flex w='100%' my='6' maxW={1480} mx='auto' px='6'>
         <Sidebar />
 
-        <Box flex='1' borderRadius={8} bg='gray.800' p={['6', '8']}>
+        <Box
+          as='form' 
+          flex='1' 
+          borderRadius={8} 
+          bg='gray.800' 
+          p={['6', '8']}
+          onSubmit={handleSubmit(handleCreateUser)}
+        >
           <Heading fontWeight='normal' size='lg'>Create user</Heading>
 
           <Divider my='6' borderColor='gray.700'/>
           <VStack spacing='8'>
             <SimpleGrid minChildWidth='240px' spacing={['6', '8']} w='100%'>
-              <Input name='name' label='Name and surname' />
-              <Input name='email' label='E-mail' type='email' />
+              <Input
+                name='name' 
+                label='Name and surname'
+                ref={register(nameFormValidation)} 
+              />
+              <Input
+                name='email' 
+                label='E-mail' 
+                type='email' 
+                error={errors.email}
+                ref={register(emailFormValidation)}
+              />
             </SimpleGrid>
 
             <SimpleGrid minChildWidth='240px' spacing={['6', '8']} w='100%'>
-              <Input name='password' label='Password' type='password'/>
-              <Input name='re_password' label='Repeat password' type='password' />
+              <Input
+                name='password' 
+                label='Password' 
+                type='password'
+                error={errors.password}
+                ref={register(registerPasswordFormValidation)}
+              />
+              <Input
+                name='re_password' 
+                label='Repeat password' 
+                type='password' 
+                error={errors.re_password}
+                ref={register(registerRe_passwordFormValidation)}
+              />
             </SimpleGrid>
           </VStack>
 
@@ -42,7 +92,7 @@ export default function CreateUser() {
                   Cancel
                 </Button>
               </Link>
-              <Button colorScheme='red'>
+              <Button colorScheme='red' type='submit' isLoading={isSubmitting}>
                 Save
               </Button>
             </HStack>
