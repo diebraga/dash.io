@@ -3,7 +3,7 @@ import { Profile } from './Profile';
 import { Searchbox } from './Searchbox';
 import { Notification } from './Notification';
 import { Logo } from './Logo';
-import { useSideBarDrawer } from '../../hooks/SidebarDrawerContext';
+import { useSideBarDrawer } from '../../hooks/useSidebarDrawer';
 import { RiMenuLine } from 'react-icons/ri';
 
 export function Header() {

@@ -4,21 +4,16 @@ import { RiAddLine, RiEdit2Line } from "react-icons/ri";
 import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 import { Sidebar } from "../../components/Sidebar";
-import { useQuery } from "react-query";
+import { useUsers } from "../../hooks/useUsers";
 
 export default function UserList(){
-  const { data, isLoading, error } = useQuery('users', async () => {
-    const response = await fetch(`http://localhost:1337/users`)	
-    const data = await response.json()
-
-    return data
-  })
-
+  const { data, isLoading, error, isFetching } = useUsers()
+  
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
   });
-    
+
   return (
     <Box>
       <Header />      
@@ -28,7 +23,10 @@ export default function UserList(){
 
         <Box flex="1" borderRadius={8} bg="gray.800" p="8">
           <Flex mb="8" justify="space-between" align="center">
-            <Heading size="lg" fontWeight="normal">User</Heading>
+            <Heading size="lg" fontWeight="normal">
+              User
+              {!isLoading && isFetching && <Spinner ml='4' color='red.500' size='sm'/>}
+            </Heading>
 
             <Link href="/users/create" passHref>
               <Button 
