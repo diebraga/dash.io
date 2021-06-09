@@ -65,33 +65,41 @@ export default function UserList(){
               </Tr>
             </Thead>            
               <Tbody>
-                {Array.from(Array(5).keys()).map(key => (
-                  <Tr key={key}>
-                    <Td px={["4", "4", "6"]}>
-                      <Checkbox colorScheme="red" />           
+                {data.map(user => {
+                  return (
+                    <Tr key={user.id}>
+                      <Td px={["4", "4", "6"]}>
+                        <Checkbox colorScheme="red" />           
+                      </Td>
+                      <Td>
+                        <Box>
+                          <Text fontWeight='bold'>{user.name}</Text>
+                          <Text fontSize='sm' color='gray.300'>diebraga.developer@gmail.com</Text>
+                        </Box>
+                      </Td>
+                      {isWideVersion && <Td>{new Date(user.created_at).toLocaleDateString(
+                        'en-GB', {
+                          day: '2-digit',
+                          month: 'short',
+                          year: 'numeric'
+                        }
+                      )}</Td>}
+                      <Td>
+                      {isWideVersion && <Button 
+                        as='a' 
+                        cursor='pointer'
+                        size='sm' 
+                        fontSize='sm' 
+                        variant='ghost'
+                        _hover={{ opacity: '0.5' }}
+                        leftIcon={<Icon as={RiEdit2Line} fontSize='17' />}
+                      >
+                        Edit
+                      </Button>}
                     </Td>
-                    <Td>
-                      <Box>
-                        <Text fontWeight='bold'>Diego Braga</Text>
-                        <Text fontSize='sm' color='gray.300'>diebraga.developer@gmail.com</Text>
-                      </Box>
-                    </Td>
-                    {isWideVersion && <Td>12 may 2121</Td>}
-                    <Td>
-                    {isWideVersion && <Button 
-                      as='a' 
-                      cursor='pointer'
-                      size='sm' 
-                      fontSize='sm' 
-                      variant='ghost'
-                      _hover={{ opacity: '0.5' }}
-                      leftIcon={<Icon as={RiEdit2Line} fontSize='17' />}
-                    >
-                      Edit
-                    </Button>}
-                    </Td>
-                  </Tr>
-                ))}
+                  </Tr>  
+                  )
+                })}
               </Tbody>
           </Table>
                   
