@@ -5,16 +5,19 @@ import Link from "next/link";
 import { Sidebar } from "../../components/Sidebar";
 import { Input } from "../../components/Form/Input";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useFormValidation } from '../../hooks/useFormValidation';
+import { useMutation } from "react-query";
+import axios from "axios";
+import { registerPasswordFormValidation, emailFormValidation, nameFormValidation } from '../../components/validations';
 
 export default function CreateUser() {
-  const { handleSubmit, register, errors, formState: { isSubmitting } } = useForm({ mode: 'all' })
-  const { 
-    registerPasswordFormValidation, 
-    registerRe_passwordFormValidation, 
-    emailFormValidation,
-    nameFormValidation
-  } = useFormValidation()
+  const { handleSubmit, register, errors, watch, formState: { isSubmitting } } = useForm({ mode: 'all' })
+
+  const registerRe_passwordFormValidation = {
+    required: "Repeat password is required",
+    validate: (value: string) => 
+    value === watch('password')
+    || "Password does not match"
+  }  
 
   type CreateUserFormData = {
     name: string
@@ -23,8 +26,9 @@ export default function CreateUser() {
     re_password: string
   }
 
-  const handleCreateUser: SubmitHandler<CreateUserFormData> = (data) => {
-    console.log(data)
+
+  const handleCreateUser: SubmitHandler<CreateUserFormData> = async (user: CreateUserFormData) => {
+    
   }
 
   return (
@@ -56,6 +60,7 @@ export default function CreateUser() {
               <Input
                 name='name' 
                 label='Name and surname'
+                error={errors.name}
                 ref={register(nameFormValidation)} 
               />
               <Input

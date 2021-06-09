@@ -15,5 +15,7 @@ export const getUsers = async (page: number): Promise<UserProp[]> => {
 }
 
 export function useUsers(page: number) {
-  return useQuery(['users', page], () => getUsers(page))
+  return useQuery(['users', page], () => getUsers(page), {
+    staleTime: 1000 * 60 * 10, // 10 min
+  })
 }

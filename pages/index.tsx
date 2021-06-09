@@ -4,7 +4,7 @@ import { Input } from "../components/Form/Input";
 import Head from 'next/head'
 import React, { useState } from 'react';
 import { RiEyeOffLine, RiEyeLine } from "react-icons/ri";
-import { useFormValidation } from '../hooks/useFormValidation';
+import { emailFormValidation, passwordFormValidation } from '../components/validations';
 
 type SignFormData = {
   email: string
@@ -14,8 +14,6 @@ type SignFormData = {
 export default function Signin() {
   const { handleSubmit, register, errors, formState: { isSubmitting } } = useForm({ mode: 'all' })
   const [showPassword, setShowPassword] = useState(false)
-
-  const { emailFormValidation, passwordFormValidation } = useFormValidation()
 
   const handleSignIn: SubmitHandler<SignFormData> = (data) => {
     console.log(data)
