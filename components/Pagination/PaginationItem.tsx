@@ -1,4 +1,4 @@
-import { Box, Button, Stack } from '@chakra-ui/react'
+import { Button } from '@chakra-ui/react'
 
 interface PaginationItemProps {
   isCurrent?: boolean
