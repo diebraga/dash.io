@@ -1,4 +1,4 @@
-import { Flex, Box, Heading, Divider, VStack, SimpleGrid, HStack, Button, VisuallyHidden, Select } from '@chakra-ui/react'
+import { Flex, Box, Heading, Divider, VStack, SimpleGrid, HStack, Button, Select } from '@chakra-ui/react'
 import { Header } from "../../components/Header";
 import Head from 'next/head'
 import Link from "next/link";
@@ -6,7 +6,6 @@ import { Sidebar } from "../../components/Sidebar";
 import { Input } from "../../components/Form/Input";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { registerPasswordFormValidation, emailFormValidation, nameFormValidation } from '../../components/validations';
-import axios from 'axios'
 import { useMutation, useQueryClient } from "react-query";
 
 export default function CreateUser() {
@@ -27,7 +26,7 @@ export default function CreateUser() {
     re_password: string;
   };
 
-  const createEmployee = async (data: CreateUserFormData) => {
+  const createUser = async (data: CreateUserFormData) => {
     const response = await fetch('http://localhost:1337/users', {
       headers: {
         'Content-Type': 'application/json',
@@ -35,11 +34,11 @@ export default function CreateUser() {
       method: 'POST',
       body: JSON.stringify(data),
     });
-    return response.json();
+    return await response.json();
   };
 
-  const { mutate } = useMutation(createEmployee, {
-    onSuccess: data => {
+  const { mutate } = useMutation(createUser, {
+    onSuccess: () => {
       const message = "success"
       alert(message)
       queryClient.invalidateQueries('users')

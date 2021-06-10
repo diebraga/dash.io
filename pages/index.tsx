@@ -2,9 +2,11 @@ import { Flex, Button, Stack, Text, Center, InputRightElement, IconButton, Input
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Input } from "../components/Form/Input";
 import Head from 'next/head'
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { RiEyeOffLine, RiEyeLine } from "react-icons/ri";
 import { emailFormValidation, passwordFormValidation } from '../components/validations';
+import { useRouter } from 'next/router';
+import { setCookie } from 'nookies';
 
 type SignFormData = {
   email: string
@@ -14,9 +16,30 @@ type SignFormData = {
 export default function Signin() {
   const { handleSubmit, register, errors, formState: { isSubmitting } } = useForm({ mode: 'all' })
   const [showPassword, setShowPassword] = useState(false)
+  const router = useRouter()
 
-  const handleSignIn: SubmitHandler<SignFormData> = (data) => {
-    console.log(data)
+  const handleSignIn: SubmitHandler<SignFormData> = async (value) => {
+    const response = await fetch(`http://localhost:1337/auth/local`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        identifier: value.email,
+        password: value.password,
+      })
+    })
+    const data = await response.json()
+
+    if (data.error) {
+      alert('error sign in')
+    } else {
+      setCookie(null, 'jwt', data.jwt , {
+        maxAge: 30 * 24 * 60 * 60,
+        path: '/',
+      })
+      router.push('/dashboard')  
+    }
   }
 
   return (
