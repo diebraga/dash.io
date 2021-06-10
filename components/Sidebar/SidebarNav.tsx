@@ -1,9 +1,14 @@
 import { Stack } from '@chakra-ui/react'
 import { RiContactsLine, RiDashboardLine, RiGitMergeLine, RiInputMethodLine } from 'react-icons/ri'
+import { FiLogOut } from 'react-icons/fi'
 import { LinkNav } from './LinkNav';
 import { NavSection } from "./NavSection";
+import { destroyCookie } from 'nookies';
+import { useRouter } from "next/router";
 
 export function SidebarNav() {
+  const router = useRouter()
+
   return (
     <Stack spacing='12' align='flex-start' >
       <NavSection title='GERAL'>
@@ -22,6 +27,12 @@ export function SidebarNav() {
           Automation
         </LinkNav>
       </NavSection>
+      <LinkNav icon={FiLogOut} href='' onClick={() => {
+        destroyCookie(null, 'jwt')
+        router.push('/signin')        
+      }}>
+        Logout
+      </LinkNav>
     </Stack>      
   )
 }
