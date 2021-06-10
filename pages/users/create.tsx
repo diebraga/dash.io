@@ -6,9 +6,12 @@ import { Sidebar } from "../../components/Sidebar";
 import { Input } from "../../components/Form/Input";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { registerPasswordFormValidation, emailFormValidation, nameFormValidation } from '../../components/validations';
+import axios from 'axios'
+import { useMutation, useQueryClient } from "react-query";
 
 export default function CreateUser() {
   const { handleSubmit, register, errors, watch, formState: { isSubmitting } } = useForm({ mode: 'all' })
+  const queryClient = useQueryClient()
 
   const registerRe_passwordFormValidation = {
     required: "Repeat password is required",
@@ -18,21 +21,35 @@ export default function CreateUser() {
   }  
 
   type CreateUserFormData = {
-    email: string
-    name: string
-    password: string
-    re_password: string
-  }
+    name: string;
+    email: string;
+    password: string;
+    re_password: string;
+  };
 
-  const handleCreateUser: SubmitHandler<CreateUserFormData> = async (values) => {
-    await fetch(`http://localhost:1337/users`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      body: JSON.stringify(values),
-    });  
-  }
+  const createEmployee = async (data: CreateUserFormData) => {
+    const { data: response } = await axios.post('http://localhost:1337/users', data);
+    return response.data;
+  };
+
+  const { mutate } = useMutation(createEmployee, {
+    onSuccess: data => {
+      const message = "success"
+      alert(message)
+      queryClient.invalidateQueries('users')
+    },
+    onError: () => {
+      alert("there was an error")
+    },
+  });
+
+  const handleCreateUser: SubmitHandler<CreateUserFormData> = (data) => {
+    const values = {
+      ...data
+    };
+    mutate(values);
+  };       
+
 
   return (
     <Box>
@@ -94,7 +111,7 @@ export default function CreateUser() {
           </VStack>
 
           {/* username is required in strapi UUID would be ideal */}
-          <VisuallyHidden name='username' ref={register} as='input' value={`${new Date()}`} />
+          <VisuallyHidden name='username' ref={register} as='input' value={`${Math.random() * 1000}`} />
           <Flex mt='8' justify='space-between'>
             <HStack>
               <Select focusBorderColor='red.300' name='confirmed' placeholder='Confirmed' ref={register({ required: 'Field required' })} >
