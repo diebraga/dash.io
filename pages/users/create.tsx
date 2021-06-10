@@ -1,4 +1,4 @@
-import { Flex, Box, Heading, Divider, VStack, SimpleGrid, HStack, Button, Select } from '@chakra-ui/react'
+import { Flex, Box, Heading, Divider, VStack, SimpleGrid, HStack, Button, Select, useToast } from '@chakra-ui/react'
 import { Header } from "../../components/Header";
 import Head from 'next/head'
 import Link from "next/link";
@@ -11,6 +11,7 @@ import { useMutation, useQueryClient } from "react-query";
 export default function CreateUser() {
   const { handleSubmit, register, errors, watch, formState: { isSubmitting } } = useForm({ mode: 'all' })
   const queryClient = useQueryClient()
+  const toast = useToast()
 
   const registerRe_passwordFormValidation = {
     required: "Repeat password is required",
@@ -39,12 +40,25 @@ export default function CreateUser() {
 
   const { mutate } = useMutation(createUser, {
     onSuccess: () => {
-      const message = "success"
-      alert(message)
-      queryClient.invalidateQueries('users')
+      toast({
+        title: "Success.",
+        description: "User created successfully.",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+        position: 'top-right'
+      })
+    queryClient.invalidateQueries('users')
     },
     onError: () => {
-      alert("there was an error")
+      toast({
+        title: "Error.",
+        description: "Error occured creating user.",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+        position: 'top-right'
+      })
     },
   });
 

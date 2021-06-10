@@ -1,4 +1,4 @@
-import { Flex, Button, Stack, Text, Center, InputRightElement, IconButton, InputGroup, Icon } from '@chakra-ui/react'
+import { Flex, Button, Stack, Text, Center, InputRightElement, IconButton, InputGroup, Icon, useToast } from '@chakra-ui/react'
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Input } from "../components/Form/Input";
 import Head from 'next/head'
@@ -17,6 +17,7 @@ export default function Signin() {
   const { handleSubmit, register, errors, formState: { isSubmitting } } = useForm({ mode: 'all' })
   const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
+  const toast = useToast()
 
   const handleSignIn: SubmitHandler<SignFormData> = async (value) => {
     const response = await fetch(`http://localhost:1337/auth/local`, {
@@ -32,7 +33,14 @@ export default function Signin() {
     const data = await response.json()
 
     if (data.error) {
-      alert('error sign in')
+      toast({
+        title: "Error.",
+        description: "Authentication failed , please tri again.",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+        position: 'top-right'
+      })
     } else {
       setCookie(null, 'jwt', data.jwt , {
         maxAge: 30 * 24 * 60 * 60,

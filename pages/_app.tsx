@@ -5,6 +5,7 @@ import { theme } from '../styles/theme'
 import { QueryClient, QueryClientProvider } from "react-query";
 import { parseCookies } from 'nookies';
 import { useRouter } from 'next/router';
+import { NextPageContext } from 'next';
 
 const queryClient = new QueryClient()
 
