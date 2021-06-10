@@ -1,12 +1,10 @@
-import { Flex, Box, Heading, Divider, VStack, SimpleGrid, HStack, Button } from '@chakra-ui/react'
+import { Flex, Box, Heading, Divider, VStack, SimpleGrid, HStack, Button, VisuallyHidden, Select } from '@chakra-ui/react'
 import { Header } from "../../components/Header";
 import Head from 'next/head'
 import Link from "next/link";
 import { Sidebar } from "../../components/Sidebar";
 import { Input } from "../../components/Form/Input";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useMutation } from "react-query";
-import axios from "axios";
 import { registerPasswordFormValidation, emailFormValidation, nameFormValidation } from '../../components/validations';
 
 export default function CreateUser() {
@@ -20,15 +18,20 @@ export default function CreateUser() {
   }  
 
   type CreateUserFormData = {
-    name: string
     email: string
+    name: string
     password: string
     re_password: string
   }
 
-
-  const handleCreateUser: SubmitHandler<CreateUserFormData> = async (user: CreateUserFormData) => {
-    
+  const handleCreateUser: SubmitHandler<CreateUserFormData> = async (values) => {
+    await fetch(`http://localhost:1337/users`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify(values),
+    });  
   }
 
   return (
@@ -90,7 +93,15 @@ export default function CreateUser() {
             </SimpleGrid>
           </VStack>
 
-          <Flex mt='8' justify='flex-end'>
+          {/* username is required in strapi UUID would be ideal */}
+          <VisuallyHidden name='username' ref={register} as='input' value={`${new Date()}`} />
+          <Flex mt='8' justify='space-between'>
+            <HStack>
+              <Select focusBorderColor='red.300' name='confirmed' placeholder='Confirmed' ref={register({ required: 'Field required' })} >
+                <option style={{ background: '#1A202C' }} value={`${true}`}>On</option>
+                <option style={{ background: '#1A202C' }} value={`${false}`}>Off</option>
+              </Select>
+            </HStack>
             <HStack spacing='4'>
               <Link href="/users" passHref>
                 <Button colorScheme='whiteAlpha'>
