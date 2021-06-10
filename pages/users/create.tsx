@@ -28,8 +28,14 @@ export default function CreateUser() {
   };
 
   const createEmployee = async (data: CreateUserFormData) => {
-    const { data: response } = await axios.post('http://localhost:1337/users', data);
-    return response.data;
+    const response = await fetch('http://localhost:1337/users', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+    return response.json();
   };
 
   const { mutate } = useMutation(createEmployee, {
@@ -45,7 +51,8 @@ export default function CreateUser() {
 
   const handleCreateUser: SubmitHandler<CreateUserFormData> = (data) => {
     const values = {
-      ...data
+      ...data, 
+      username: Math.random() * 1000
     };
     mutate(values);
   };       
@@ -111,7 +118,6 @@ export default function CreateUser() {
           </VStack>
 
           {/* username is required in strapi UUID would be ideal */}
-          <VisuallyHidden name='username' ref={register} as='input' value={`${Math.random() * 1000}`} />
           <Flex mt='8' justify='space-between'>
             <HStack>
               <Select focusBorderColor='red.300' name='confirmed' placeholder='Confirmed' ref={register({ required: 'Field required' })} >
