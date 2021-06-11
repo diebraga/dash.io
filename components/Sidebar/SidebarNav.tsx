@@ -27,12 +27,6 @@ export function SidebarNav() {
           Automation
         </LinkNav>
       </NavSection>
-      <LinkNav icon={FiLogOut} href='' onClick={() => {
-        destroyCookie(null, 'jwt')
-        router.push('/signin')        
-      }}>
-        Logout
-      </LinkNav>
     </Stack>      
   )
 }
