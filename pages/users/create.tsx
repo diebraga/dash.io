@@ -1,4 +1,4 @@
-import { Flex, Box, Heading, Divider, VStack, SimpleGrid, HStack, Button, useToast, Select, FormLabel } from '@chakra-ui/react'
+import { Flex, Box, Heading, Divider, VStack, SimpleGrid, HStack, Button, useToast, Select, FormLabel, useColorMode } from '@chakra-ui/react'
 import { Header } from "../../components/Header";
 import Head from 'next/head'
 import Link from "next/link";
@@ -12,6 +12,10 @@ export default function CreateUser() {
   const { handleSubmit, register, errors, watch, control, formState: { isSubmitting } } = useForm({ mode: 'all' })
   const queryClient = useQueryClient()
   const toast = useToast()
+
+  const { colorMode } = useColorMode()
+
+  const bgColor = { light: '#eeeef2', dark: '#1A202C' }
 
   const registerRe_passwordFormValidation = {
     required: "Repeat password is required",
@@ -88,7 +92,7 @@ export default function CreateUser() {
           as='form' 
           flex='1' 
           borderRadius={8} 
-          bg='gray.800' 
+          bg={bgColor[colorMode]}
           p={['6', '8']}
           onSubmit={handleSubmit(handleCreateUser)}
         >
@@ -139,8 +143,8 @@ export default function CreateUser() {
                   defaultValue={`${true}`}
                   as={
                     <Select mt='2'>
-                      <option style={{ background: '#1A202C' }} value={`${true}`}>On</option>
-                      <option style={{ background: '#1A202C' }} value={`${false}`}>Off</option>
+                      <option style={{ background: bgColor[colorMode] }} value={`${true}`}>On</option>
+                      <option style={{ background: bgColor[colorMode] }} value={`${false}`}>Off</option>
                     </Select>
                   }
                   name="confirmed"
@@ -148,13 +152,13 @@ export default function CreateUser() {
                 />
               </FormLabel>
             </HStack>
-            <HStack spacing='4' mt='27px'>
+            <HStack spacing='4' mt='27px' color='gray.50'>
               <Link href="/users" passHref>
-                <Button colorScheme='whiteAlpha'>
+                <Button bg='gray.200'>
                   Cancel
                 </Button>
               </Link>
-              <Button colorScheme='red' type='submit' isLoading={isSubmitting}>
+              <Button bg='red' type='submit' isLoading={isSubmitting}>
                 Save
               </Button>
             </HStack>

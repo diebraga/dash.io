@@ -1,7 +1,11 @@
-import { Flex, Input, Icon } from '@chakra-ui/react'
+import { Flex, Input, Icon, useColorMode } from '@chakra-ui/react'
 import { RiSearchLine } from "react-icons/ri";
 
 export function Searchbox() {
+  const { colorMode } = useColorMode()
+
+  const bgColor = { light: 'gray.50', dark: 'gray.800' }
+
   return(
     <>
       <Flex
@@ -14,7 +18,7 @@ export function Searchbox() {
         alignSelf="center"
         color="gray.200"
         position="relative"
-        bg="gray.800"
+        bg={bgColor[colorMode]}
         borderRadius="full"
       >
         <Input

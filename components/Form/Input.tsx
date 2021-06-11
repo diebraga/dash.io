@@ -1,4 +1,4 @@
-import { Input as ChakraInput, FormLabel, FormControl, InputProps as ChakraInputProps, FormErrorMessage } from '@chakra-ui/react'
+import { Input as ChakraInput, FormLabel, FormControl, InputProps as ChakraInputProps, FormErrorMessage, useColorMode } from '@chakra-ui/react'
 import { forwardRef, ForwardRefRenderFunction } from 'react'
 import { FieldError } from "react-hook-form";
 
@@ -11,6 +11,10 @@ interface InputProps extends ChakraInputProps {
 
 const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps>
  = ({ name, label, error = null, ...rest }, ref ) => {
+  const { colorMode } = useColorMode()
+
+  const bgColor = { light: 'white', dark: 'gray.900' }
+
   return (
     <FormControl isInvalid={!!error}>
       {!! label && <FormLabel htmlFor={name}>{label}</FormLabel>}
@@ -19,9 +23,9 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps>
         placeholder={label} 
         id={name}
         focusBorderColor='red.300'
-        bgColor='gray.900'
+        bgColor={bgColor[colorMode]}
         variant='filled'
-        _hover={{ bgColor: 'gray.900 '}}
+        _hover={{ bgColor: bgColor[colorMode] }}
         {...rest}
         ref={ref}
       />

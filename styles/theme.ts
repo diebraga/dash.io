@@ -20,11 +20,11 @@ export const theme = extendTheme({
     body: 'Roboto',
   },
   styles: {
-    global: {
+    global: ({ colorMode }) => ({
       body: {
-        bg: 'gray.900',
-        color: 'gray.50'
+        bg: colorMode === 'dark' ? 'gray.900' : 'white',
+        color: colorMode === 'dark' ? 'gray.50' : 'gray.900'
       }
-    }
+    })
   }
 })

@@ -1,7 +1,7 @@
 import { Flex, Icon, IconButton, useBreakpointValue } from '@chakra-ui/react'
 import { Profile } from './Profile';
 import { Searchbox } from './Searchbox';
-import { Notification } from './Notification';
+import { Options } from './Options';
 import { Logo } from './Logo';
 import { useSideBarDrawer } from '../../hooks/useSidebarDrawer';
 import { RiMenuLine } from 'react-icons/ri';
@@ -41,7 +41,7 @@ export function Header() {
         align='center'
         ml='auto'
       >
-        <Notification />
+        <Options />
         <Profile showProfileData={isWideVersion} />
       </Flex>
     </Flex>

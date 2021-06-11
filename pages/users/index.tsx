@@ -1,4 +1,4 @@
-import { Box, Spinner, Button, Checkbox, Flex, Heading, Icon, Table, Tbody, Td, Text, Th, Thead, Tr, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Spinner, Button, Checkbox, Flex, Heading, Icon, Table, Tbody, Td, Text, Th, Thead, Tr, useBreakpointValue, useColorMode } from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { RiAddLine, RiEdit2Line } from "react-icons/ri";
@@ -16,11 +16,15 @@ export default function UserList(){
     base: false,
     lg: true,
   });
+
+  const { colorMode } = useColorMode()
+
+  const bgColor = { light: 'gray.50', dark: 'gray.800' }
   
   const getCount = async () => {
     const countResponse = await fetch(`http://localhost:1337/users/count`,)	
     const totalCount = await countResponse.json()
-  
+
     setTotalRegister(totalCount)
   }  
 
@@ -35,7 +39,7 @@ export default function UserList(){
       <Flex w="100%" my="6" maxWidth={1480} mx="auto" px="6">
         <Sidebar />
 
-        <Box flex="1" borderRadius={8} bg="gray.800" p="8">
+        <Box flex="1" borderRadius={8} bg={bgColor[colorMode]} p="8">
           <Flex mb="8" justify="space-between" align="center">
             <Heading size="lg" fontWeight="normal">
               User
@@ -47,7 +51,8 @@ export default function UserList(){
                 as="a" 
                 size="sm" 
                 fontSize="sm" 
-                colorScheme="red" 
+                bg="red.500" 
+                color='gray.50'
                 leftIcon={<Icon as={RiAddLine} />}
               >
                 New user

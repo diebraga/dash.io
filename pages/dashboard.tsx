@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic'
 import { Header } from "../components/Header";
-import { Flex, SimpleGrid, Box, Text, theme } from '@chakra-ui/react'
+import { Flex, SimpleGrid, Box, Text, theme, useColorMode } from '@chakra-ui/react'
 import { Sidebar } from "../components/Sidebar";
 import Head from 'next/head'
 
@@ -62,6 +62,10 @@ const series = [
 ]
 
 export default function Dashboard() {
+  const { colorMode } = useColorMode()
+
+  const bgColor = { light: 'gray.50', dark: 'gray.800' }
+
   return (
     <>
     <Head>
@@ -76,12 +80,12 @@ export default function Dashboard() {
         <Sidebar />
 
         <SimpleGrid gap='4' flex='1' minChildWidth='320px' align='flex-start'>
-          <Box p={['6', '8']} bg='gray.800' borderRadius={8} pb='4' fontSize='sm'>
+          <Box p={['6', '8']} bg={bgColor[colorMode]} borderRadius={8} pb='4' fontSize='sm'>
             <Text fontSize='lg' mb='4'>Weekly subscriptions</Text>
             <Chart options={options} series={series} type='area' height={160}/>
           </Box>
 
-          <Box p='8' bg='gray.800' borderRadius={8} pb='4'>
+          <Box p='8' bg={bgColor[colorMode]} borderRadius={8} pb='4'>
             <Text fontSize='lg' mb='4'>Opening rate</Text>
             <Chart options={options} series={series} type='area' height={160}/>
           </Box>

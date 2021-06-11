@@ -1,7 +1,8 @@
 import { Icon, HStack } from '@chakra-ui/react'
 import { RiNotificationLine, RiUserAddLine } from "react-icons/ri";
+import { DarkModeSwitch } from '../DarkModeSwitch';
 
-export function Notification() {
+export function Options() {
   return(
     <>
       <HStack
@@ -12,9 +13,10 @@ export function Notification() {
         color='gray.300'
         borderRightWidth={1}
         borderColor='gray.700'
-      >
-        <Icon as={RiNotificationLine} fontSize='20'/>
-        <Icon as={RiUserAddLine} fontSize='20'/>
+      >  
+        {/* <Icon as={RiNotificationLine} fontSize='20'/>
+        <Icon as={RiUserAddLine} fontSize='20'/> */}
+        <DarkModeSwitch />
       </HStack>
     </>
   )

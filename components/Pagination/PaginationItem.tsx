@@ -19,6 +19,7 @@ export function PaginationItem({
         width="4"
         colorScheme="red"
         disabled
+        color='gray.50'
         _disabled={{
           bgColor: "red.500",
           cursor: "default",
@@ -35,6 +36,7 @@ export function PaginationItem({
       fontSize="xs"
       width="4"
       bg="gray.700"
+      color='gray.50'
       _hover={{
         bg: "gray.500",
       }}

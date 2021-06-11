@@ -1,4 +1,4 @@
-import { Flex, Button, Stack, Text, Center, InputRightElement, IconButton, InputGroup, Icon, useToast } from '@chakra-ui/react'
+import { Flex, Button, Stack, Text, Center, InputRightElement, IconButton, InputGroup, Icon, useToast, useColorMode } from '@chakra-ui/react'
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Input } from "../components/Form/Input";
 import Head from 'next/head'
@@ -7,6 +7,7 @@ import { RiEyeOffLine, RiEyeLine } from "react-icons/ri";
 import { emailFormValidation, passwordFormValidation } from '../components/validations';
 import { useRouter } from 'next/router';
 import { setCookie } from 'nookies';
+import { DarkModeSwitch } from '../components/DarkModeSwitch';
 
 type SignFormData = {
   email: string
@@ -18,6 +19,11 @@ export default function Signin() {
   const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
   const toast = useToast()
+
+  const { colorMode } = useColorMode()
+
+  const bgColor = { light: 'gray.50', dark: 'gray.800' }
+
 
   const handleSignIn: SubmitHandler<SignFormData> = async (value) => {
     const response = await fetch(`http://localhost:1337/auth/local`, {
@@ -58,11 +64,14 @@ export default function Signin() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Flex w='100vw' h='100vh' align='center' justify='center'>
+        <Flex position='absolute' right='30px' top='27px'>
+          <DarkModeSwitch />
+        </Flex>  
         <Flex
           as='form' 
           w='100%' 
           maxW={360} 
-          bg='gray.800' 
+          bg={bgColor[colorMode]}
           p='8' 
           borderRadius={8}
           flexDir='column'
@@ -95,7 +104,8 @@ export default function Signin() {
                   size='sm'
                   ml='32px'
                   mt='64px'
-                  colorScheme='red'
+                  bg='red.500' 
+                  color='gray.50'
                   onClick={() => setShowPassword(!showPassword)} 
                   icon={showPassword ? 
                   <Icon as={RiEyeLine} /> : 
@@ -104,7 +114,7 @@ export default function Signin() {
               </InputRightElement>
             </InputGroup>
           </Stack>
-          <Button type='submit' mt='6' colorScheme='red' size='lg' isLoading={isSubmitting}>
+          <Button type='submit' mt='6' bg='red.500' color='gray.50' size='lg' isLoading={isSubmitting}>
             Enter
           </Button>
         </Flex>
