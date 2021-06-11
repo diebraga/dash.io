@@ -1,15 +1,15 @@
-import { Flex, Box, Heading, Divider, VStack, SimpleGrid, HStack, Button, Select, useToast } from '@chakra-ui/react'
+import { Flex, Box, Heading, Divider, VStack, SimpleGrid, HStack, Button, useToast, Select, FormLabel } from '@chakra-ui/react'
 import { Header } from "../../components/Header";
 import Head from 'next/head'
 import Link from "next/link";
 import { Sidebar } from "../../components/Sidebar";
 import { Input } from "../../components/Form/Input";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { registerPasswordFormValidation, emailFormValidation, nameFormValidation } from '../../components/validations';
 import { useMutation, useQueryClient } from "react-query";
 
 export default function CreateUser() {
-  const { handleSubmit, register, errors, watch, formState: { isSubmitting } } = useForm({ mode: 'all' })
+  const { handleSubmit, register, errors, watch, control, formState: { isSubmitting } } = useForm({ mode: 'all' })
   const queryClient = useQueryClient()
   const toast = useToast()
 
@@ -133,12 +133,22 @@ export default function CreateUser() {
           {/* username is required in strapi UUID would be ideal */}
           <Flex mt='8' justify='space-between'>
             <HStack>
-              <Select focusBorderColor='red.300' name='confirmed' placeholder='Confirmed' ref={register({ required: 'Field required' })} >
-                <option style={{ background: '#1A202C' }} value={`${true}`}>On</option>
-                <option style={{ background: '#1A202C' }} value={`${false}`}>Off</option>
-              </Select>
+              <FormLabel>
+                Confirmed
+                <Controller
+                  defaultValue={`${true}`}
+                  as={
+                    <Select mt='2'>
+                      <option style={{ background: '#1A202C' }} value={`${true}`}>On</option>
+                      <option style={{ background: '#1A202C' }} value={`${false}`}>Off</option>
+                    </Select>
+                  }
+                  name="confirmed"
+                  control={control} 
+                />
+              </FormLabel>
             </HStack>
-            <HStack spacing='4'>
+            <HStack spacing='4' mt='27px'>
               <Link href="/users" passHref>
                 <Button colorScheme='whiteAlpha'>
                   Cancel
