@@ -30,7 +30,7 @@
     "name": "A Strapi developer"
   },
   "strapi": {
-    "uuid": "d5b45ed5-376c-4c10-9835-62ed7205e7c3",
+    "uuid": "96e8eadd-0a95-4cf4-9bf9-8204ee837524",
     "template": "https://github.com/strapi/strapi-template-portfolio"
   },
   "engines": {

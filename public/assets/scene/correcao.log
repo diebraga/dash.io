@@ -1,0 +1,336 @@
+Exporter version: 6.4.4, Blender version: 2.83.13
+========= Conversion from Blender to Babylon.js =========
+	Scene settings used :
+		Inline textures     :  false
+		Material Type       :  PBR
+		Positions Precision :  4
+		Normals Precision   :  3
+		UVs Precision       :  3
+		Vert Color Precision:  3
+		Mat Weight Precision:  2
+		Keep Z-up r-handed  :  no
+		Texture directory   :  C:\Users\Carol\Documents\CENA.CAPOBIANCO\cena.stands\correcao\
+			processing env texture studio_512.env
+	Python World class constructor completed
+	processing begun of mesh:  art_pdfprofi_005
+		processing begun of material:  m_artepdf
+			processing texture t_pdf
+				texture type:  diffuseTexture, mapped using: "UVMap"
+			processing texture t_pdf
+				texture type:  emissiveTexture, mapped using: "UVMap"
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  art_cartao01profi_005
+		processing begun of material:  m_cartaodevisitas
+			processing texture t_cartao
+				texture type:  diffuseTexture, mapped using: "UVMap"
+			processing texture t_cartao
+				texture type:  emissiveTexture, mapped using: "UVMap"
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  art_pdfprofi_006
+		processing begun of material:  m_artepdf
+		registered as also a user of material:  m_artepdf
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  art_cartao01profi_006
+		processing begun of material:  m_cartaodevisitas
+		registered as also a user of material:  m_cartaodevisitas
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  art_pdfprofi_007
+		processing begun of material:  m_artepdf
+		registered as also a user of material:  m_artepdf
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  art_cartao01profi_007
+		processing begun of material:  m_cartaodevisitas
+		registered as also a user of material:  m_cartaodevisitas
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  art_pdfprofi_008
+		processing begun of material:  m_artepdf
+		registered as also a user of material:  m_artepdf
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  art_cartao01profi_008
+		processing begun of material:  m_cartaodevisitas
+		registered as also a user of material:  m_cartaodevisitas
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  art_logo03premium_001
+		processing begun of material:  m_logo
+			processing texture t_logo11
+				texture type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  art_logo03premium_004
+		processing begun of material:  m_logo
+		registered as also a user of material:  m_logo
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  art_logo01premium_001
+		mesh is an instance of :  art_logo03premium_001.  Processing halted.
+	processing begun of mesh:  art_logo02premium_001
+		mesh is an instance of :  art_logo03premium_001.  Processing halted.
+	processing begun of mesh:  art_logo04premium_001
+		mesh is an instance of :  art_logo03premium_001.  Processing halted.
+	processing begun of mesh:  art_logo01premium_004
+		mesh is an instance of :  art_logo03premium_004.  Processing halted.
+	processing begun of mesh:  art_logo02premium_004
+		mesh is an instance of :  art_logo03premium_004.  Processing halted.
+	processing begun of mesh:  art_logo04premium_004
+		mesh is an instance of :  art_logo03premium_004.  Processing halted.
+	processing begun of mesh:  art_logo01profi_006
+		processing begun of material:  m_logo
+		registered as also a user of material:  m_logo
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  art_logo02profi_006
+		mesh is an instance of :  art_logo01profi_006.  Processing halted.
+	processing begun of mesh:  art_logo03profi_006
+		mesh is an instance of :  art_logo01profi_006.  Processing halted.
+	processing begun of mesh:  art_logo04profi_006
+		mesh is an instance of :  art_logo01profi_006.  Processing halted.
+	processing begun of mesh:  art_logo01profi_005
+		processing begun of material:  m_logo
+		registered as also a user of material:  m_logo
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  art_logo02profi_005
+		mesh is an instance of :  art_logo01profi_005.  Processing halted.
+	processing begun of mesh:  art_logo03profi_005
+		mesh is an instance of :  art_logo01profi_005.  Processing halted.
+	processing begun of mesh:  art_logo04profi_005
+		mesh is an instance of :  art_logo01profi_005.  Processing halted.
+	processing begun of mesh:  art_logo01profi_007
+		processing begun of material:  m_logo
+		registered as also a user of material:  m_logo
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  art_logo02profi_007
+		mesh is an instance of :  art_logo01profi_007.  Processing halted.
+	processing begun of mesh:  art_logo03profi_007
+		mesh is an instance of :  art_logo01profi_007.  Processing halted.
+	processing begun of mesh:  art_logo04profi_007
+		mesh is an instance of :  art_logo01profi_007.  Processing halted.
+	processing begun of mesh:  art_logo01profi_008
+		processing begun of material:  m_logo
+		registered as also a user of material:  m_logo
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  art_logo02profi_008
+		mesh is an instance of :  art_logo01profi_008.  Processing halted.
+	processing begun of mesh:  art_logo03profi_008
+		mesh is an instance of :  art_logo01profi_008.  Processing halted.
+	processing begun of mesh:  art_logo04profi_008
+		mesh is an instance of :  art_logo01profi_008.  Processing halted.
+	processing begun of mesh:  art_logo01premium_002
+		processing begun of material:  m_logo
+		registered as also a user of material:  m_logo
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  art_logo02premium_002
+		mesh is an instance of :  art_logo01premium_002.  Processing halted.
+	processing begun of mesh:  art_logo03premium_002
+		mesh is an instance of :  art_logo01premium_002.  Processing halted.
+	processing begun of mesh:  art_logo04premium_002
+		mesh is an instance of :  art_logo01premium_002.  Processing halted.
+	processing begun of mesh:  art_logo01premium_003
+		processing begun of material:  m_logo
+		registered as also a user of material:  m_logo
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  art_logo02premium_003
+		mesh is an instance of :  art_logo01premium_003.  Processing halted.
+	processing begun of mesh:  art_logo03premium_003
+		mesh is an instance of :  art_logo01premium_003.  Processing halted.
+	processing begun of mesh:  art_logo04premium_003
+		mesh is an instance of :  art_logo01premium_003.  Processing halted.
+	processing begun of mesh:  col_videocartaolinkpdfchat_001
+		processing begun of material:  m_colisao
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  col_videocartaolinkpdfchat_002
+		processing begun of material:  m_colisao
+		registered as also a user of material:  m_colisao
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  col_videocartaolinkpdfchat_003
+		processing begun of material:  m_colisao
+		registered as also a user of material:  m_colisao
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  col_videocartaolinkpdfchat_004
+		processing begun of material:  m_colisao
+		registered as also a user of material:  m_colisao
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  col_videocartaolinkpdf_005
+		processing begun of material:  m_colisao
+		registered as also a user of material:  m_colisao
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  col_videocartaolinkpdf_006
+		processing begun of material:  m_colisao
+		registered as also a user of material:  m_colisao
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  col_videocartaolinkpdf_007
+		processing begun of material:  m_colisao
+		registered as also a user of material:  m_colisao
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of mesh:  col_videocartaolinkpdf_008
+		processing begun of material:  m_colisao
+		registered as also a user of material:  m_colisao
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+========= Writing of JSON file started =========
+	writing mesh:  art_pdfprofi_005
+	writing mesh:  art_cartao01profi_005
+	writing mesh:  art_pdfprofi_006
+	writing mesh:  art_cartao01profi_006
+	writing mesh:  art_pdfprofi_007
+	writing mesh:  art_cartao01profi_007
+	writing mesh:  art_pdfprofi_008
+	writing mesh:  art_cartao01profi_008
+	writing mesh:  art_logo03premium_001
+	writing mesh:  art_logo03premium_004
+	writing mesh:  art_logo01profi_006
+	writing mesh:  art_logo01profi_005
+	writing mesh:  art_logo01profi_007
+	writing mesh:  art_logo01profi_008
+	writing mesh:  art_logo01premium_002
+	writing mesh:  art_logo01premium_003
+	writing mesh:  col_videocartaolinkpdfchat_001
+	writing mesh:  col_videocartaolinkpdfchat_002
+	writing mesh:  col_videocartaolinkpdfchat_003
+	writing mesh:  col_videocartaolinkpdfchat_004
+	writing mesh:  col_videocartaolinkpdf_005
+	writing mesh:  col_videocartaolinkpdf_006
+	writing mesh:  col_videocartaolinkpdf_007
+	writing mesh:  col_videocartaolinkpdf_008
+========= Writing of JSON file completed =========
+========= end of processing =========
+elapsed time:  0 min, 0.3535 secs

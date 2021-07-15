@@ -2,44 +2,6 @@ import { destroyCookie } from "nookies";
 import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from "react";
 import Router from 'next/router'
 
-type Evento = {
-  nome_do_evento: string;
-  nome_organizador: string;
-  descricao_organizador: string;
-  dia_inicio_do_evento: string;
-  dia_final_do_evento: string;
-  horario_inicio_do_evento: string;
-  horario_final_do_evento: string;
-  id: string;
-  imagem_1:{
-    url: string
-  }
-  imagem_2:{
-    url: string
-  }
-  imagem_3:{
-    url: string
-  }
-  imagem_4:{
-    url: string
-  }
-  imagem_principal: {
-    url: string;
-  }
-  imagem_organizador: string;
-  
-  link_facebook: string;
-  link_instagram: string;
-  link_linkedin: string;
-  link_video: string;
-  titulo_texto_1: string;
-  texto_1: string;
-  titulo_texto_2: string;
-  texto_2: string;
-  titulo_texto_video: string;
-  texto_video: string;
-}
-
 type CurrentUser = {
   id: string
   confirmed?: boolean
@@ -71,8 +33,6 @@ type AuthContextData = {
   setUsers: Dispatch<SetStateAction<CurrentUser[]>>
   searchName: string
   setSearchName: Dispatch<SetStateAction<string>>
-  setCurrentEvent: Dispatch<SetStateAction<{}>>
-  currentEvent: Evento
   isAuthenticated: boolean
 }
 
@@ -82,7 +42,6 @@ export function AuthProvider({ children }: AuthProviderProps){
   const [currentUser, setCurrentUser] = useState({} as CurrentUser)
   const [users, setUsers] = useState<CurrentUser[]>([])
   const [searchName, setSearchName] = useState('')
-  const [currentEvent, setCurrentEvent] = useState({} as Evento);
   let isAuthenticated = !!currentUser
 
   function signOut() {
@@ -99,8 +58,6 @@ export function AuthProvider({ children }: AuthProviderProps){
       setUsers,
       searchName,
       setSearchName,
-      currentEvent,
-      setCurrentEvent,
       isAuthenticated
     }}>
       {children}

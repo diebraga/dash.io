@@ -59,26 +59,14 @@
       "plugin": "users-permissions",
       "configurable": false
     },
+    "name": {
+      "type": "string"
+    },
     "surname": {
       "type": "string"
     },
-    "avatar": {
-      "collection": "file",
-      "via": "related",
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos"
-      ],
-      "plugin": "upload",
-      "required": false,
-      "pluginOptions": {}
-    },
     "password2": {
       "type": "password"
-    },
-    "name": {
-      "type": "string"
     }
   }
 }

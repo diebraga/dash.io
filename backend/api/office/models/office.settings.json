@@ -11,19 +11,11 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "id_video": {
-      "type": "string"
-    },
-    "id_web": {
-      "type": "string"
-    },
     "logo_right": {
       "model": "file",
       "via": "related",
       "allowedTypes": [
-        "images",
-        "files",
-        "videos"
+        "images"
       ],
       "plugin": "upload",
       "required": false,
@@ -41,6 +33,12 @@
       "required": false,
       "pluginOptions": {}
     },
+    "id_video": {
+      "type": "string"
+    },
+    "id_web": {
+      "type": "string"
+    },
     "image_video": {
       "model": "file",
       "via": "related",
@@ -54,7 +52,7 @@
       "pluginOptions": {}
     },
     "image_web": {
-      "collection": "file",
+      "model": "file",
       "via": "related",
       "allowedTypes": [
         "images",
