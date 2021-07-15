@@ -46,7 +46,7 @@ export function Searchbox() {
           variant='unstyled'
           px='4'
           mr='4'
-          placeholder='Buscar por email...'
+          placeholder='Search by email...'
           _placeholder={{ color: 'gray.400' }}
           onChange={event => setSearchName(event.target.value)}
         />

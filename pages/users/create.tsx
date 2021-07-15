@@ -77,8 +77,9 @@ export default function CreateUser({ jwt }) {
     
     const responseData = await response.json()
 
-      if (responseData.error) {
-        if (responseData.message[0].messages[0].message === 'Email already taken.') {
+    if (responseData.error) {
+      if (responseData.error === "Bad Request") {
+        if (responseData.data[0].messages[0].message === "Email already taken") {
           toast({
             title: "Erro!",
             description: `User with this email already exists.`,
@@ -86,28 +87,38 @@ export default function CreateUser({ jwt }) {
             duration: 8000,
             isClosable: true,
             position: 'top-right'
-          })
-        } else {
-          toast({
-            title: "Erro!",
-            description: `Error authenticating please try again.`,
-            status: "error",
-            duration: 8000,
-            isClosable: true,
-            position: 'top-right'
           })  
         }
+      } else if (responseData.error === "Forbidden") {
+        toast({
+          title: "Erro!",
+          description: `Only administrators have the permission to perform this action.`,
+          status: "error",
+          duration: 8000,
+          isClosable: true,
+          position: 'top-right'
+        })  
       } else {
         toast({
-          title: "Sucesso!",
-          description: `User created succesfully!`,
-          status: "success",
+          title: "Erro!",
+          description: `Error updating user please try again.`,
+          status: "error",
           duration: 8000,
           isClosable: true,
           position: 'top-right'
         })  
       }
-  };       
+    } else {
+      toast({
+        title: "Sucesso!",
+        description: `User updated successfully!`,
+        status: "success",
+        duration: 8000,
+        isClosable: true,
+        position: 'top-right'
+      })  
+    }
+};       
 
   return (
     <Box>
@@ -201,7 +212,6 @@ export default function CreateUser({ jwt }) {
                 colorScheme='red' 
                 type='submit' 
                 isLoading={isSubmitting} 
-                disabled={userRole != 'Administrator'}
               >
                 Save
               </Button>

@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/office",
+      "handler": "office.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/office",
+      "handler": "office.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/office",
+      "handler": "office.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
