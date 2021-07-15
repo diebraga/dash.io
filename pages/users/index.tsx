@@ -1,16 +1,252 @@
-import { Box, Spinner, Button, Checkbox, Flex, Heading, Icon, Table, Tbody, Td, Text, Th, Thead, Tr, useBreakpointValue, useColorMode } from "@chakra-ui/react";
+import { 
+  Box, 
+  Spinner, 
+  Button, 
+  Flex, 
+  Heading, 
+  Icon, 
+  Table, 
+  Tbody, 
+  Td, 
+  Text, 
+  Th, 
+  Thead, 
+  Tr, 
+  useBreakpointValue, 
+  useColorMode, 
+  useToast, 
+  Menu, 
+  MenuButton, 
+  MenuList, 
+  MenuItem,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  } from "@chakra-ui/react";
+import { GetServerSideProps } from "next";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { RiAddLine, RiEdit2Line } from "react-icons/ri";
-import { Header } from "../../components/Header";
-import { Pagination } from "../../components/Pagination";
-import { Sidebar } from "../../components/Sidebar";
+import { parseCookies } from "nookies";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { RiAddLine } from "react-icons/ri";
+import { BiChevronDown } from "react-icons/bi"
+import { UpdateUserForm } from "../../components/DashboardComponents/Form/UpdateUserForm";
+import { Header } from "../../components/DashboardComponents/Header";
+import { SearchUserList } from "../../components/DashboardComponents/Header/SearchUserList";
+import { Pagination } from "../../components/DashboardComponents/Pagination";
+import { Sidebar } from "../../components/DashboardComponents/Sidebar";
+import { useAuth } from "../../hooks/useAuth";
 import { useUsers } from "../../hooks/useUsers";
+import axios from 'axios'
+import Router from "next/router";
+import Head from 'next/head'
 
-export default function UserList(){
+type User = {
+  id: string
+  confirmed: boolean
+  blocked: boolean
+  created_at: string
+  updated_at: string
+  email: string
+  name: string
+  surname: string
+  role: {
+    description: string
+    type: string
+    name: string
+  }
+}
+
+export default function UserList({ jwt }){
+  const [newEmail, setNewEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [newName, setNewName] = useState('');
+
+  const toast = useToast()
+  const [isOpen, setIsOpen] = useState(false)
+  const onClose = () => setIsOpen(false)
+  const cancelRef = useRef()
+
+  const [comfirmValue, setComfirmValue] = useState(undefined);
+  const [blockValue, setBlockValue] = useState(undefined);
+
+  const [mudarSenha, setMudarSenha] = useState(false)
+
+  const [editing, setEditing] = useState(false);
+  const [newId, setId] = useState('');
+
+	const [spinner, setSpinner] = useState(false)
+
+  const [users, setUsers] = useState<User[]>([]);
+
+  async function getUsers(): Promise<void> {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/users`, {
+      headers: {
+        Authorization: `Bearer ${jwt}`
+      }
+    });	
+    const data: User[] = await response.json();
+    setUsers(data);	
+  }
+
+	const updateUser = async (id: string): Promise<void> => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/users/${id}`, {
+			headers: {
+				Authorization: `Bearer ${jwt}`
+			}
+		});
+    const data = await response.json();
+
+    setEditing(true);
+    setId(data.id);
+
+    setNewEmail(data.email);
+    setComfirmValue(data.confirmed)
+    setBlockValue(data.blocked)
+    setNewName(data.name)
+  }
+
+  const deleteUser = async (id: string) => {
+    const authorization = {
+      headers: {
+        'Authorization': `Bearer ${jwt}`,
+      }
+    };
+
+    try {
+      
+    } catch (error) {
+      
+    }
+    axios.delete(`${process.env.NEXT_PUBLIC_API}/users/${id}`, authorization)
+      .then(response => {
+      data.filter(user => id !== user.id)
+
+      if (response.status === 200) {
+        toast({
+          title: "Sucesso!",
+          description: `User deleted successfully.`,
+          status: "success",
+          duration: 8000,
+          isClosable: true,
+          position: 'top-right'
+        })
+        setTimeout(() => {
+          Router.reload()
+        }, 3000);
+      } 
+    }).catch(error => {
+      if (error.response.status === 403) {
+        toast({
+          title: "Error!",
+          description: `Only administrators have the permission to perform this action.`,
+          status: "error",
+          duration: 8000,
+          isClosable: true,
+          position: 'top-right'
+        })
+      }
+    })
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>,): Promise<void> {
+    event.preventDefault();    
+      if (mudarSenha === true) {
+        setSpinner(true)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/users/${newId}`, {
+         method: 'PUT',
+         headers: {
+           Authorization: `Bearer ${jwt}`,
+           'Content-Type': 'application/json',
+         },
+         body: JSON.stringify({
+           email: newEmail,
+           password: newPassword,
+           confirmed: comfirmValue,
+           blocked: blockValue,
+           name: newName
+         }),
+       })
+       setEditing(false)
+ 
+       setSpinner(false)
+ 
+       setId(''); 
+      } else {
+        setSpinner(true)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/users/${newId}`, {
+         method: 'PUT',
+         headers: {
+           Authorization: `Bearer ${jwt}`,
+           'Content-Type': 'application/json',
+         },
+         body: JSON.stringify({
+           email: newEmail,
+           confirmed: comfirmValue,
+           blocked: blockValue,
+           name: newName
+         }),
+       })
+       const data = await response.json()
+       setEditing(false)
+
+       if (data.error) {
+        if (data.error === "Bad Request") {
+          if (data.data[0].messages[0].message === "Email already taken") {
+            toast({
+              title: "Erro!",
+              description: `User with this email already exists.`,
+              status: "error",
+              duration: 8000,
+              isClosable: true,
+              position: 'top-right'
+            })  
+          }
+        } else if (data.error === "Forbidden") {
+          toast({
+            title: "Erro!",
+            description: `Only administrators have the permission to perform this action.`,
+            status: "error",
+            duration: 8000,
+            isClosable: true,
+            position: 'top-right'
+          })  
+        } else {
+          toast({
+            title: "Erro!",
+            description: `Error updating user please try again.`,
+            status: "error",
+            duration: 8000,
+            isClosable: true,
+            position: 'top-right'
+          })  
+        }
+      } else {
+        toast({
+          title: "Sucesso!",
+          description: `User updated successfully!`,
+          status: "success",
+          duration: 8000,
+          isClosable: true,
+          position: 'top-right'
+        })  
+      }
+       setSpinner(false)
+ 
+       setId(''); 
+      }
+    
+    await getUsers();
+  }
+
   const [page, setPage] = useState(1)
   const [totalRegister, setTotalRegister] = useState(0)
+  
   const { data, isLoading, error, isFetching } = useUsers(page)
+
+  const { searchName } = useAuth()
   
   const isWideVersion = useBreakpointValue({
     base: false,
@@ -20,30 +256,62 @@ export default function UserList(){
   const { colorMode } = useColorMode()
 
   const bgColor = { light: 'gray.50', dark: 'gray.800' }
-  
+
   const getCount = async () => {
-    const countResponse = await fetch(`http://localhost:1337/users/count`,)	
-    const totalCount = await countResponse.json()
+    const authorization = {
+      headers: {
+        'Authorization': `Bearer ${jwt}`,
+      }
+    };
+
+    const countResponse = await axios.get(`${process.env.NEXT_PUBLIC_API}/users/count`, authorization)	
+    const totalCount = await countResponse.data
 
     setTotalRegister(totalCount)
   }  
 
   useEffect(() => {
     getCount()
+    getUsers()
   }, [])
 
   return (
     <Box>
-      <Header />      
+      <Head>
+        <title>Users | dash.io</title>
+        <meta name="description" content="Users page dash.io" />
+      </Head>
 
+      <Header />   
       <Flex w="100%" my="6" maxWidth={1480} mx="auto" px="6">
         <Sidebar />
-
-        <Box flex="1" borderRadius={8} bg={bgColor[colorMode]} p="8">
+          {editing ? (
+            <>
+            <UpdateUserForm 
+              handleSubmit={handleSubmit}
+              setNewEmail={setNewEmail}
+              newEmail={newEmail}
+              setNewPassword={setNewPassword}
+              newPassword={newPassword}
+              mudarSenha={mudarSenha}
+              setMudarSenha={setMudarSenha}
+              comfirmValue={comfirmValue}
+              setComfirmValue={setComfirmValue}
+              blockValue={blockValue}
+              setBlockValue={setBlockValue}
+              spinner={spinner}
+              setEditing={setEditing}
+              newName={newName}
+              setNewName={setNewName}
+            />
+            </>
+          ) : (
+            <>
+          <Box flex="1" borderRadius={8} bg={bgColor[colorMode]} p="8">
           <Flex mb="8" justify="space-between" align="center">
             <Heading size="lg" fontWeight="normal">
-              User
-              {!isLoading && isFetching && <Spinner ml='4' color='red.500' size='sm'/>}
+            USERS
+              {!isLoading && isFetching && <Spinner ml='4' color='blue.500' size='sm'/>}
             </Heading>
 
             <Link href="/users/create" passHref>
@@ -51,33 +319,51 @@ export default function UserList(){
                 as="a" 
                 size="sm" 
                 fontSize="sm" 
-                bg="red.500" 
-                color='gray.50'
+                colorScheme="red" 
                 leftIcon={<Icon as={RiAddLine} />}
               >
-                New user
+                NEW USER
               </Button>
             </Link>
 
           </Flex>
           {isLoading ? (
             <Flex justify='center'>
-              <Spinner color='red.500' size='lg' thickness='5px' />
+              <Spinner color='blue.500' size='lg' thickness='5px' />
             </Flex>
           ) : error ? (
             <Flex justify='center'>
-              <Text>Error loading users.</Text>
+              <Text>Erro carregando.</Text>
             </Flex>
           ) : (
           <>
-          <Table colorScheme="whiteAlpha">
+          {searchName.length > 0 ? (
+            <SearchUserList
+              handleSubmit={handleSubmit}
+              setNewEmail={setNewEmail}
+              newEmail={newEmail}
+              setNewPassword={setNewPassword}
+              newPassword={newPassword}
+              mudarSenha={mudarSenha}
+              setMudarSenha={setMudarSenha}
+              comfirmValue={comfirmValue}
+              setComfirmValue={setComfirmValue}
+              blockValue={blockValue}
+              setBlockValue={setBlockValue}
+              spinner={spinner}
+              setEditing={setEditing}
+              newName={newName}
+              setNewName={setNewName}
+              setId={setId}
+              editing={editing}
+            />
+          ) : (
+            <>
+            <Table colorScheme="whiteAlpha">
             <Thead>
               <Tr>
-                <Th px={["4", "4", "6"]} color="gray.300" width="8">
-                  <Checkbox colorScheme="red" />
-                </Th>
                 <Th>Usuários</Th>
-                {isWideVersion && <Th>Register date</Th>}
+                {isWideVersion && <Th>Data de registro</Th>}
                 <Th width="8"></Th>
               </Tr>
             </Thead>            
@@ -85,13 +371,10 @@ export default function UserList(){
                 {data.map(user => {
                   return (
                     <Tr key={user.id}>
-                      <Td px={["4", "4", "6"]}>
-                        <Checkbox colorScheme="red" />           
-                      </Td>
                       <Td>
                         <Box>
-                          <Text fontWeight='bold'>{user.name}</Text>
-                          <Text fontSize='sm' color='gray.300'>diebraga.developer@gmail.com</Text>
+                          <Text fontWeight='bold'>{user.name} {user.surname}</Text>
+                          <Text fontSize='sm' color='gray.300'>{user.email}</Text>
                         </Box>
                       </Td>
                       {isWideVersion && <Td>{new Date(user.created_at).toLocaleDateString(
@@ -102,17 +385,53 @@ export default function UserList(){
                         }
                       )}</Td>}
                       <Td>
-                      {isWideVersion && <Button 
-                        as='a' 
-                        cursor='pointer'
-                        size='sm' 
-                        fontSize='sm' 
-                        variant='ghost'
-                        _hover={{ opacity: '0.5' }}
-                        leftIcon={<Icon as={RiEdit2Line} fontSize='17' />}
-                      >
-                        Edit
-                      </Button>}
+                      <Menu>
+                        <MenuButton as={Button} rightIcon={<BiChevronDown />} variant='ghost' fontSize='sm'>
+                        Options
+                        </MenuButton>
+                        <MenuList bg={bgColor[colorMode]}>
+                          <MenuItem 
+                            color='blue.500'
+                            fontSize='sm'
+                            onClick={e => updateUser(user.id)} 
+                          >
+                            Edit
+                          </MenuItem>
+                          <MenuItem 
+                            color='red.500'   
+                            onClick={() => setIsOpen(true)}
+                            fontSize='sm'
+                          >
+                            Delete
+                          </MenuItem>
+                        </MenuList>
+                        <AlertDialog
+                          isOpen={isOpen}
+                          leastDestructiveRef={cancelRef}
+                          onClose={onClose}
+                        >
+                          <AlertDialogOverlay>
+                            <AlertDialogContent>
+                              <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                                Delete user
+                              </AlertDialogHeader>
+
+                              <AlertDialogBody>
+                                Are you sure you wanna perform this action?
+                              </AlertDialogBody>
+
+                              <AlertDialogFooter>
+                                <Button ref={cancelRef} onClick={onClose}>
+                                  Cancel
+                                </Button>
+                                <Button colorScheme="red" onClick={() => {deleteUser(user.id);onClose()}} ml={3}>
+                                  Delete
+                                </Button>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialogOverlay>
+                        </AlertDialog>
+                      </Menu>
                     </Td>
                   </Tr>  
                   )
@@ -126,9 +445,33 @@ export default function UserList(){
             onPageChange={setPage}
           />
           </>
+          )} 
+          </>
           )}
         </Box>
+            </>
+          )} 
+
       </Flex>
     </Box>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+	const jwt = parseCookies(ctx).jwt
+
+  if (!jwt) {
+    return { 
+      redirect: {
+        destination: '/signin',
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {
+			jwt: jwt,
+		}, 
+  }
 }

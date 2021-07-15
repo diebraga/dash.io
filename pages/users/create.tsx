@@ -1,17 +1,30 @@
 import { Flex, Box, Heading, Divider, VStack, SimpleGrid, HStack, Button, useToast, Select, FormLabel, useColorMode } from '@chakra-ui/react'
-import { Header } from "../../components/Header";
+import { Header } from "../../components/DashboardComponents/Header";
 import Head from 'next/head'
 import Link from "next/link";
-import { Sidebar } from "../../components/Sidebar";
-import { Input } from "../../components/Form/Input";
+import { Sidebar } from "../../components/DashboardComponents/Sidebar";
+import { Input } from "../../components/DashboardComponents/Form/Input";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { registerPasswordFormValidation, emailFormValidation, nameFormValidation } from '../../components/validations';
-import { useMutation, useQueryClient } from "react-query";
+import { registerPasswordFormValidation, emailFormValidation, nameFormValidation } from '../../components/DashboardComponents/validations';
+import { useEffect } from 'react';
+import { parseCookies } from 'nookies';
+import { GetServerSideProps } from 'next';
+import { useAuth } from '../../hooks/useAuth';
 
-export default function CreateUser() {
+export default function CreateUser({ jwt }) {
   const { handleSubmit, register, errors, watch, control, formState: { isSubmitting } } = useForm({ mode: 'all' })
-  const queryClient = useQueryClient()
   const toast = useToast()
+  const { setCurrentUser, currentUser } = useAuth()
+
+  let userRole = ''
+
+  if (currentUser) {
+    if (currentUser.role) {
+      if (currentUser.role.name) {
+        userRole = currentUser.role.name
+      }
+    }
+  }
 
   const { colorMode } = useColorMode()
 
@@ -26,61 +39,81 @@ export default function CreateUser() {
 
   type CreateUserFormData = {
     name: string;
+    surname: string;
     email: string;
     password: string;
     re_password: string;
   };
 
-  const createUser = async (data: CreateUserFormData) => {
-    const response = await fetch('http://localhost:1337/users', {
+  const getCurrentUser = async () => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/users/me`, {
       headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-    return await response.json();
-  };
+        Authorization: `Bearer ${jwt}`
+      }
+    })
 
-  const { mutate } = useMutation(createUser, {
-    onSuccess: () => {
-      toast({
-        title: "Success.",
-        description: "User created successfully.",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-        position: 'top-right'
-      })
-    queryClient.invalidateQueries('users')
-    },
-    onError: () => {
-      toast({
-        title: "Error.",
-        description: "Error occured creating user.",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-        position: 'top-right'
-      })
-    },
-  });
+    const data = await response.json()
+    setCurrentUser(data)
+  }
 
-  const handleCreateUser: SubmitHandler<CreateUserFormData> = (data) => {
+  useEffect(() => {
+    getCurrentUser()
+  }, [])
+
+  const handleCreateUser: SubmitHandler<CreateUserFormData> = async (data) => {
     const values = {
       ...data, 
       username: Math.random() * 1000
     };
-    mutate(values);
-  };       
 
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${jwt}`
+      },
+      body: JSON.stringify(values)
+    })
+    
+    const responseData = await response.json()
+
+      if (responseData.error) {
+        if (responseData.message[0].messages[0].message === 'Email already taken.') {
+          toast({
+            title: "Erro!",
+            description: `User with this email already exists.`,
+            status: "error",
+            duration: 8000,
+            isClosable: true,
+            position: 'top-right'
+          })
+        } else {
+          toast({
+            title: "Erro!",
+            description: `Error authenticating please try again.`,
+            status: "error",
+            duration: 8000,
+            isClosable: true,
+            position: 'top-right'
+          })  
+        }
+      } else {
+        toast({
+          title: "Sucesso!",
+          description: `User created succesfully!`,
+          status: "success",
+          duration: 8000,
+          isClosable: true,
+          position: 'top-right'
+        })  
+      }
+  };       
 
   return (
     <Box>
       <Head>
-        <title>Users | Dash.io</title>
+        <title>Users | dash.io</title>
         <meta name="description" content="Users page dash.io" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <Header />
@@ -96,15 +129,21 @@ export default function CreateUser() {
           p={['6', '8']}
           onSubmit={handleSubmit(handleCreateUser)}
         >
-          <Heading fontWeight='normal' size='lg'>Create user</Heading>
+          <Heading fontWeight='normal' size='lg'>CREATE USER</Heading>
 
           <Divider my='6' borderColor='gray.700'/>
           <VStack spacing='8'>
             <SimpleGrid minChildWidth='240px' spacing={['6', '8']} w='100%'>
               <Input
                 name='name' 
-                label='Name and surname'
+                label='Name'
                 error={errors.name}
+                ref={register(nameFormValidation)} 
+              />
+              <Input
+                name='surname' 
+                label='Surname'
+                error={errors.surname}
                 ref={register(nameFormValidation)} 
               />
               <Input
@@ -132,9 +171,9 @@ export default function CreateUser() {
                 ref={register(registerRe_passwordFormValidation)}
               />
             </SimpleGrid>
+
           </VStack>
 
-          {/* username is required in strapi UUID would be ideal */}
           <Flex mt='8' justify='space-between'>
             <HStack>
               <FormLabel>
@@ -143,8 +182,8 @@ export default function CreateUser() {
                   defaultValue={`${true}`}
                   as={
                     <Select mt='2'>
-                      <option style={{ background: bgColor[colorMode] }} value={`${true}`}>On</option>
-                      <option style={{ background: bgColor[colorMode] }} value={`${false}`}>Off</option>
+                      <option style={{ background: bgColor[colorMode] }} value={`${true}`}>✔️</option>
+                      <option style={{ background: bgColor[colorMode] }} value={`${false}`}>❌</option>
                     </Select>
                   }
                   name="confirmed"
@@ -152,13 +191,18 @@ export default function CreateUser() {
                 />
               </FormLabel>
             </HStack>
-            <HStack spacing='4' mt='27px' color='gray.50'>
+            <HStack spacing='4' mt='27px'>
               <Link href="/users" passHref>
-                <Button bg='gray.200'>
+                <Button colorScheme='gray'>
                   Cancel
                 </Button>
               </Link>
-              <Button bg='red' type='submit' isLoading={isSubmitting}>
+              <Button 
+                colorScheme='red' 
+                type='submit' 
+                isLoading={isSubmitting} 
+                disabled={userRole != 'Administrator'}
+              >
                 Save
               </Button>
             </HStack>
@@ -167,4 +211,23 @@ export default function CreateUser() {
       </Flex>
     </Box>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+	const jwt = parseCookies(ctx).jwt
+
+  if (!jwt) {
+    return { 
+      redirect: {
+        destination: '/signin-dashboard',
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {
+			jwt: jwt,
+		}, 
+  }
 }

@@ -1,3 +1,4 @@
+import { parseCookies } from "nookies";
 import { useQuery } from "react-query";
 
 interface UserProp {
@@ -5,10 +6,18 @@ interface UserProp {
   email: string
   id: string
   created_at: string
+  surname: string
 }
 
 export const getUsers = async (page: number): Promise<UserProp[]> => {
-  const response = await fetch(`http://localhost:1337/users?_start=${page}&_limit=1`,)	
+  const jwt = parseCookies().jwt
+
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API}/users?_start=${page}&_limit=5`, {
+    headers: {
+      Authorization: `Bearer ${jwt}`
+    }
+  })
+
   const data = await response.json()
 
   return data

@@ -1,13 +1,13 @@
 import { Flex, Button, Stack, Text, Center, InputRightElement, IconButton, InputGroup, Icon, useToast, useColorMode } from '@chakra-ui/react'
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Input } from "../components/Form/Input";
+import { Input } from "../components//DashboardComponents/Form/Input";
 import Head from 'next/head'
 import { useState } from 'react';
 import { RiEyeOffLine, RiEyeLine } from "react-icons/ri";
-import { emailFormValidation, passwordFormValidation } from '../components/validations';
+import { emailFormValidation, passwordFormValidation } from '../components//DashboardComponents/validations';
 import { useRouter } from 'next/router';
 import { setCookie } from 'nookies';
-import { DarkModeSwitch } from '../components/DarkModeSwitch';
+import { DarkModeSwitch } from '../components//DashboardComponents/DarkModeSwitch';
 
 type SignFormData = {
   email: string
