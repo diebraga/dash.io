@@ -4,21 +4,8 @@ import Router from 'next/router'
 
 type CurrentUser = {
   id: string
-  confirmed?: boolean
-  blocked?: boolean
-  created_at?: string
-  updated_at?: string
   email?: string
   name?: string
-  surname?: string
-  role?: {
-    description?: string
-    type?: string
-    name?: string
-  }
-  avatar?: {
-    url: string
-  }
 }
 
 interface AuthProviderProps {

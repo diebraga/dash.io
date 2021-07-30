@@ -12,13 +12,15 @@ export function Searchbox() {
   const getUsers = async () => {
     const jwt = parseCookies().jwt
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/users`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/auth/users/`, {
       headers: {
-        Authorization: `Bearer ${jwt}`
+        'Content-Type': 'application/json',
+        'Authorization': `JWT ${jwt}`,
+        'Accept': 'application/json'
       }
-    })
-
+    });	
     const data = await response.json()
+  
     setUsers(data)
   } 
 

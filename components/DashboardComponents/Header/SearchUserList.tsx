@@ -130,7 +130,6 @@ export function SearchUserList({
         <Thead>
           <Tr>
             <Th>Usuários</Th>
-            {isWideVersion && <Th>Data de registro</Th>}
             <Th width="8"></Th>
           </Tr>
         </Thead>            
@@ -150,13 +149,6 @@ export function SearchUserList({
                       <Text fontSize='sm' color='gray.300'>{user.email}</Text>
                     </Box>
                   </Td>
-                  {isWideVersion && <Td>{new Date(user.created_at).toLocaleDateString(
-                    'pt-BR', {
-                      day: '2-digit',
-                      month: 'short',
-                      year: 'numeric'
-                    }
-                  )}</Td>}
                   <Td>
                   <Menu>
                     <MenuButton as={Button} rightIcon={<BiChevronDown />} variant='ghost' fontSize='sm'>

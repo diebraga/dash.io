@@ -21,7 +21,7 @@ export function Profile({ showProfileData }: ProfileProps) {
       }
     });	
     const data = await response.json();
-    console.log(data)
+    
     setCurrentUser(data);	
   }
   
@@ -33,7 +33,7 @@ export function Profile({ showProfileData }: ProfileProps) {
     <>
       <Flex align='center'>
         <Box mr='4' textAlign='right' display={!showProfileData && 'none'}>
-          <Text>{currentUser.name} {currentUser.surname}</Text>
+          <Text>{currentUser.name}</Text>
           <Text fontSize='small' color='gray.300'>
             {currentUser.email}
           </Text>

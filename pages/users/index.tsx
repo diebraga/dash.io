@@ -35,34 +35,23 @@ import { BiChevronDown } from "react-icons/bi"
 import { UpdateUserForm } from "../../components/DashboardComponents/Form/UpdateUserForm";
 import { Header } from "../../components/DashboardComponents/Header";
 import { SearchUserList } from "../../components/DashboardComponents/Header/SearchUserList";
-import { Pagination } from "../../components/DashboardComponents/Pagination";
 import { Sidebar } from "../../components/DashboardComponents/Sidebar";
 import { useAuth } from "../../hooks/useAuth";
-import { useUsers } from "../../hooks/useUsers";
 import axios from 'axios'
 import Router from "next/router";
 import Head from 'next/head'
 
 type User = {
   id: string
-  confirmed: boolean
-  blocked: boolean
-  created_at: string
-  updated_at: string
   email: string
   name: string
-  surname: string
-  role: {
-    description: string
-    type: string
-    name: string
-  }
 }
 
 export default function UserList({ jwt }){
   const [newEmail, setNewEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newName, setNewName] = useState('');
+  const [apiRequest, setApiRequest] = useState(new Date());
 
   const toast = useToast()
   const [isOpen, setIsOpen] = useState(false)
@@ -82,9 +71,11 @@ export default function UserList({ jwt }){
   const [users, setUsers] = useState<User[]>([]);
 
   async function getUsers(): Promise<void> {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/users`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/auth/users/`, {
       headers: {
-        Authorization: `Bearer ${jwt}`
+        'Content-Type': 'application/json',
+        'Authorization': `JWT ${jwt}`,
+        'Accept': 'application/json'
       }
     });	
     const data: User[] = await response.json();
@@ -92,11 +83,13 @@ export default function UserList({ jwt }){
   }
 
 	const updateUser = async (id: string): Promise<void> => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/users/${id}`, {
-			headers: {
-				Authorization: `Bearer ${jwt}`
-			}
-		});
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/auth/users/`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `JWT ${jwt}`,
+        'Accept': 'application/json'
+      }
+    });	
     const data = await response.json();
 
     setEditing(true);
@@ -122,7 +115,7 @@ export default function UserList({ jwt }){
     }
     axios.delete(`${process.env.NEXT_PUBLIC_API}/users/${id}`, authorization)
       .then(response => {
-      data.filter(user => id !== user.id)
+      users.filter(user => id !== user.id)
 
       if (response.status === 200) {
         toast({
@@ -133,9 +126,7 @@ export default function UserList({ jwt }){
           isClosable: true,
           position: 'top-right'
         })
-        setTimeout(() => {
-          Router.reload()
-        }, 3000);
+        setApiRequest(new Date())
       } 
     }).catch(error => {
       if (error.response.status === 403) {
@@ -241,11 +232,6 @@ export default function UserList({ jwt }){
     await getUsers();
   }
 
-  const [page, setPage] = useState(1)
-  const [totalRegister, setTotalRegister] = useState(0)
-  
-  const { data, isLoading, error, isFetching } = useUsers(page)
-
   const { searchName } = useAuth()
   
   const isWideVersion = useBreakpointValue({
@@ -257,23 +243,9 @@ export default function UserList({ jwt }){
 
   const bgColor = { light: 'gray.50', dark: 'gray.800' }
 
-  const getCount = async () => {
-    const authorization = {
-      headers: {
-        'Authorization': `Bearer ${jwt}`,
-      }
-    };
-
-    const countResponse = await axios.get(`${process.env.NEXT_PUBLIC_API}/users/count`, authorization)	
-    const totalCount = await countResponse.data
-
-    setTotalRegister(totalCount)
-  }  
-
   useEffect(() => {
-    getCount()
     getUsers()
-  }, [])
+  }, [apiRequest])
 
   return (
     <Box>
@@ -311,7 +283,7 @@ export default function UserList({ jwt }){
           <Flex mb="8" justify="space-between" align="center">
             <Heading size="lg" fontWeight="normal">
             USERS
-              {!isLoading && isFetching && <Spinner ml='4' color='blue.500' size='sm'/>}
+              {/* {!isLoading && isFetching && <Spinner ml='4' color='blue.500' size='sm'/>} */}
             </Heading>
 
             <Link href="/users/create" passHref>
@@ -327,15 +299,6 @@ export default function UserList({ jwt }){
             </Link>
 
           </Flex>
-          {isLoading ? (
-            <Flex justify='center'>
-              <Spinner color='blue.500' size='lg' thickness='5px' />
-            </Flex>
-          ) : error ? (
-            <Flex justify='center'>
-              <Text>Erro carregando.</Text>
-            </Flex>
-          ) : (
           <>
           {searchName.length > 0 ? (
             <SearchUserList
@@ -363,27 +326,19 @@ export default function UserList({ jwt }){
             <Thead>
               <Tr>
                 <Th>Usuários</Th>
-                {isWideVersion && <Th>Data de registro</Th>}
                 <Th width="8"></Th>
               </Tr>
             </Thead>            
               <Tbody>
-                {data.map(user => {
+                {users.map(user => {
                   return (
                     <Tr key={user.id}>
                       <Td>
                         <Box>
-                          <Text fontWeight='bold'>{user.name} {user.surname}</Text>
+                          <Text fontWeight='bold'>{user.name}</Text>
                           <Text fontSize='sm' color='gray.300'>{user.email}</Text>
                         </Box>
                       </Td>
-                      {isWideVersion && <Td>{new Date(user.created_at).toLocaleDateString(
-                        'en-GB', {
-                          day: '2-digit',
-                          month: 'short',
-                          year: 'numeric'
-                        }
-                      )}</Td>}
                       <Td>
                       <Menu>
                         <MenuButton as={Button} rightIcon={<BiChevronDown />} variant='ghost' fontSize='sm'>
@@ -439,15 +394,9 @@ export default function UserList({ jwt }){
               </Tbody>
           </Table>
                   
-          <Pagination 
-            totalCountOfRegisters={totalRegister}
-            currentPage={page}
-            onPageChange={setPage}
-          />
           </>
           )} 
           </>
-          )}
         </Box>
             </>
           )} 
