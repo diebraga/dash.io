@@ -13,12 +13,15 @@ export function Profile({ showProfileData }: ProfileProps) {
   const jwt = parseCookies().jwt
 
   async function getCurrentUser(): Promise<void> {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/users/me`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/auth/users/me/`, {
       headers: {
-        Authorization: `Bearer ${jwt}`
+        'Content-Type': 'application/json',
+        'Authorization': `JWT ${jwt}`,
+        'Accept': 'application/json'
       }
     });	
     const data = await response.json();
+    console.log(data)
     setCurrentUser(data);	
   }
   
@@ -36,7 +39,7 @@ export function Profile({ showProfileData }: ProfileProps) {
           </Text>
         </Box>
 
-        <Avatar size='md' name={`${currentUser.name}${currentUser.surname}`} />
+        <Avatar size='md' name={`${currentUser.name}`} />
       </Flex>
     </>
   )

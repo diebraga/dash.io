@@ -26,19 +26,25 @@ export default function Signin() {
 
 
   const handleSignIn: SubmitHandler<SignFormData> = async (value) => {
-    const response = await fetch(`http://localhost:1337/auth/local`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/auth/jwt/create/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        identifier: value.email,
+        email: value.email,
         password: value.password,
       })
     })
     const data = await response.json()
 
-    if (data.error) {
+    if (data.access) {
+      setCookie(null, 'jwt', data.access , {
+        maxAge: 30 * 24 * 60 * 60,
+        path: '/',
+      })
+      router.push('/dashboard')  
+    } else {
       toast({
         title: "Error.",
         description: "Authentication failed , please tri again.",
@@ -47,13 +53,7 @@ export default function Signin() {
         isClosable: true,
         position: 'top-right'
       })
-    } else {
-      setCookie(null, 'jwt', data.jwt , {
-        maxAge: 30 * 24 * 60 * 60,
-        path: '/',
-      })
-      router.push('/dashboard')  
-    }
+    }    
   }
 
   return (
