@@ -46,12 +46,6 @@ export function SearchUserList({
   setId
 }: UpdateUserProps) {
   const { users, searchName, setUsers } = useAuth()
-  console.log(users)
-
-  const isWideVersion = useBreakpointValue({
-    base: false,
-    lg: true,
-  });
 
   const { colorMode } = useColorMode()
   const bgColor = { light: 'gray.50', dark: 'gray.800' }

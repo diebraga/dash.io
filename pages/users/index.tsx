@@ -12,7 +12,6 @@ import {
   Th, 
   Thead, 
   Tr, 
-  useBreakpointValue, 
   useColorMode, 
   useToast, 
   Menu, 
@@ -234,11 +233,6 @@ export default function UserList({ jwt }){
 
   const { searchName } = useAuth()
   
-  const isWideVersion = useBreakpointValue({
-    base: false,
-    lg: true,
-  });
-
   const { colorMode } = useColorMode()
 
   const bgColor = { light: 'gray.50', dark: 'gray.800' }
