@@ -108,47 +108,6 @@ export function UpdateUserForm({
         <SimpleGrid minChildWidth='240px' spacing={['6', '8']} w='100%' />
       </VStack>
 
-      <HStack mt='10px' spacing={['8', '10']} justify='flex-start'>
-        <VStack>
-          <FormLabel>Confirmed</FormLabel>
-          <HStack>
-            <label htmlFor="yes">Yes</label>
-            <input
-              type="radio"
-              style={{ transform: 'scale(1.5)', cursor: 'pointer' }}
-              checked={comfirmValue === true}
-              onChange={e => setComfirmValue(true)}
-            />
-            <label htmlFor="nao">No</label>
-            <input
-              type="radio"
-              style={{ transform: 'scale(1.5)', cursor: 'pointer' }}
-              checked={comfirmValue === false}
-              onChange={e => setComfirmValue(false)}
-            />
-          </HStack>          
-        </VStack>
-        <VStack>
-          <FormLabel>Bloqueado</FormLabel>
-          <HStack>
-          <label htmlFor="sim">Yes</label>
-            <input
-              type="radio"
-              style={{ transform: 'scale(1.5)', cursor: 'pointer' }}
-              checked={blockValue === true}
-              onChange={e => setBlockValue(true)}
-            />
-            <label htmlFor="nao">No</label>
-            <input
-              type="radio"
-              style={{ transform: 'scale(1.5)', cursor: 'pointer' }}
-              checked={blockValue === false}
-              onChange={e => setBlockValue(false)}
-            />
-          </HStack>          
-        </VStack>
-      </HStack>
-
       <Flex mt='20px' justify='flex-end'>
         <HStack spacing='4' mt='27px'>
           <Button colorScheme='gray' onClick={() => setEditing(false)}>

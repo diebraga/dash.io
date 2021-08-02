@@ -16,16 +16,6 @@ export default function CreateUser({ jwt }) {
   const toast = useToast()
   const { setCurrentUser, currentUser } = useAuth()
 
-  let userRole = ''
-
-  if (currentUser) {
-    if (currentUser.role) {
-      if (currentUser.role.name) {
-        userRole = currentUser.role.name
-      }
-    }
-  }
-
   const { colorMode } = useColorMode()
 
   const bgColor = { light: '#eeeef2', dark: '#1A202C' }
@@ -39,26 +29,10 @@ export default function CreateUser({ jwt }) {
 
   type CreateUserFormData = {
     name: string;
-    surname: string;
     email: string;
     password: string;
     re_password: string;
   };
-
-  const getCurrentUser = async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/users/me`, {
-      headers: {
-        Authorization: `Bearer ${jwt}`
-      }
-    })
-
-    const data = await response.json()
-    setCurrentUser(data)
-  }
-
-  useEffect(() => {
-    getCurrentUser()
-  }, [])
 
   const handleCreateUser: SubmitHandler<CreateUserFormData> = async (data) => {
     const values = {
@@ -66,59 +40,25 @@ export default function CreateUser({ jwt }) {
       username: Math.random() * 1000
     };
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/users`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/auth/users/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${jwt}`
       },
       body: JSON.stringify(values)
     })
     
     const responseData = await response.json()
-
-    if (responseData.error) {
-      if (responseData.error === "Bad Request") {
-        if (responseData.data[0].messages[0].message === "Email already taken") {
-          toast({
-            title: "Erro!",
-            description: `User with this email already exists.`,
-            status: "error",
-            duration: 8000,
-            isClosable: true,
-            position: 'top-right'
-          })  
-        }
-      } else if (responseData.error === "Forbidden") {
-        toast({
-          title: "Erro!",
-          description: `Only administrators have the permission to perform this action.`,
-          status: "error",
-          duration: 8000,
-          isClosable: true,
-          position: 'top-right'
-        })  
-      } else {
-        toast({
-          title: "Erro!",
-          description: `Error updating user please try again.`,
-          status: "error",
-          duration: 8000,
-          isClosable: true,
-          position: 'top-right'
-        })  
+    if (!response.ok) {
+      if (responseData.email) {
+        alert(JSON.stringify(responseData?.email[0]))
+      } else if (responseData.password) {
+        alert(JSON.stringify(responseData?.password[0]))
       }
     } else {
-      toast({
-        title: "Sucesso!",
-        description: `User updated successfully!`,
-        status: "success",
-        duration: 8000,
-        isClosable: true,
-        position: 'top-right'
-      })  
+      alert('success emil needs to be verified')
     }
-};       
+  };       
 
   return (
     <Box>
@@ -152,12 +92,6 @@ export default function CreateUser({ jwt }) {
                 ref={register(nameFormValidation)} 
               />
               <Input
-                name='surname' 
-                label='Surname'
-                error={errors.surname}
-                ref={register(nameFormValidation)} 
-              />
-              <Input
                 name='email' 
                 label='E-mail' 
                 type='email' 
@@ -187,20 +121,6 @@ export default function CreateUser({ jwt }) {
 
           <Flex mt='8' justify='space-between'>
             <HStack>
-              <FormLabel>
-                Confirmed
-                <Controller
-                  defaultValue={`${true}`}
-                  as={
-                    <Select mt='2'>
-                      <option style={{ background: bgColor[colorMode] }} value={`${true}`}>✔️</option>
-                      <option style={{ background: bgColor[colorMode] }} value={`${false}`}>❌</option>
-                    </Select>
-                  }
-                  name="confirmed"
-                  control={control} 
-                />
-              </FormLabel>
             </HStack>
             <HStack spacing='4' mt='27px'>
               <Link href="/users" passHref>
@@ -217,6 +137,7 @@ export default function CreateUser({ jwt }) {
               </Button>
             </HStack>
           </Flex>
+
         </Box>
       </Flex>
     </Box>
