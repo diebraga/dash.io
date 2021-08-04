@@ -39,6 +39,7 @@ import { useAuth } from "../../hooks/useAuth";
 import axios from 'axios'
 import Router from "next/router";
 import Head from 'next/head'
+import { Input } from "../../components/DashboardComponents/Form/Input";
 
 type User = {
   id: string
@@ -51,6 +52,7 @@ export default function UserList({ jwt }){
   const [newPassword, setNewPassword] = useState('');
   const [newName, setNewName] = useState('');
   const [apiRequest, setApiRequest] = useState(new Date());
+  const [currentPassword, setCurrentPassword] = useState('');
 
   const toast = useToast()
   const [isOpen, setIsOpen] = useState(false)
@@ -82,7 +84,7 @@ export default function UserList({ jwt }){
   }
 
 	const updateUser = async (id: string): Promise<void> => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/auth/users/`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/auth/users/${id}`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `JWT ${jwt}`,
@@ -90,7 +92,7 @@ export default function UserList({ jwt }){
       }
     });	
     const data = await response.json();
-
+    
     setEditing(true);
     setId(data.id);
 
@@ -101,22 +103,16 @@ export default function UserList({ jwt }){
   }
 
   const deleteUser = async (id: string) => {
-    const authorization = {
+    axios.delete(`${process.env.NEXT_PUBLIC_API}/api/users/delete/${id}`, {
       headers: {
-        'Authorization': `Bearer ${jwt}`,
-      }
-    };
-
-    try {
-      
-    } catch (error) {
-      
-    }
-    axios.delete(`${process.env.NEXT_PUBLIC_API}/users/${id}`, authorization)
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+    })
       .then(response => {
       users.filter(user => id !== user.id)
-
-      if (response.status === 200) {
+      console.log(response.status)
+      if (response.status === 204) {
         toast({
           title: "Sucesso!",
           description: `User deleted successfully.`,
@@ -128,7 +124,7 @@ export default function UserList({ jwt }){
         setApiRequest(new Date())
       } 
     }).catch(error => {
-      if (error.response.status === 403) {
+      if (error.response.status === 401) {
         toast({
           title: "Error!",
           description: `Only administrators have the permission to perform this action.`,
@@ -145,20 +141,25 @@ export default function UserList({ jwt }){
     event.preventDefault();    
       if (mudarSenha === true) {
         setSpinner(true)
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/users/${newId}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/auth/users/${newId}`, {
          method: 'PUT',
          headers: {
-           Authorization: `Bearer ${jwt}`,
-           'Content-Type': 'application/json',
-         },
+          'Content-Type': 'application/json',
+          'Authorization': `JWT ${jwt}`,
+          'Accept': 'application/json'
+          },
          body: JSON.stringify({
            email: newEmail,
            password: newPassword,
-           confirmed: comfirmValue,
-           blocked: blockValue,
            name: newName
          }),
        })
+       if (response.ok) {
+        alert('Success')
+      } else {
+        alert('Error')
+      }
+  
        setEditing(false)
  
        setSpinner(false)
@@ -169,60 +170,18 @@ export default function UserList({ jwt }){
         const response = await fetch(`${process.env.NEXT_PUBLIC_API}/users/${newId}`, {
          method: 'PUT',
          headers: {
-           Authorization: `Bearer ${jwt}`,
-           'Content-Type': 'application/json',
-         },
+          'Content-Type': 'application/json',
+          'Authorization': `JWT ${jwt}`,
+          'Accept': 'application/json'
+          },
          body: JSON.stringify({
            email: newEmail,
-           confirmed: comfirmValue,
-           blocked: blockValue,
            name: newName
          }),
        })
        const data = await response.json()
        setEditing(false)
 
-       if (data.error) {
-        if (data.error === "Bad Request") {
-          if (data.data[0].messages[0].message === "Email already taken") {
-            toast({
-              title: "Erro!",
-              description: `User with this email already exists.`,
-              status: "error",
-              duration: 8000,
-              isClosable: true,
-              position: 'top-right'
-            })  
-          }
-        } else if (data.error === "Forbidden") {
-          toast({
-            title: "Erro!",
-            description: `Only administrators have the permission to perform this action.`,
-            status: "error",
-            duration: 8000,
-            isClosable: true,
-            position: 'top-right'
-          })  
-        } else {
-          toast({
-            title: "Erro!",
-            description: `Error updating user please try again.`,
-            status: "error",
-            duration: 8000,
-            isClosable: true,
-            position: 'top-right'
-          })  
-        }
-      } else {
-        toast({
-          title: "Sucesso!",
-          description: `User updated successfully!`,
-          status: "success",
-          duration: 8000,
-          isClosable: true,
-          position: 'top-right'
-        })  
-      }
        setSpinner(false)
  
        setId(''); 
@@ -261,10 +220,6 @@ export default function UserList({ jwt }){
               newPassword={newPassword}
               mudarSenha={mudarSenha}
               setMudarSenha={setMudarSenha}
-              comfirmValue={comfirmValue}
-              setComfirmValue={setComfirmValue}
-              blockValue={blockValue}
-              setBlockValue={setBlockValue}
               spinner={spinner}
               setEditing={setEditing}
               newName={newName}
@@ -366,7 +321,7 @@ export default function UserList({ jwt }){
                               </AlertDialogHeader>
 
                               <AlertDialogBody>
-                                Are you sure you wanna perform this action?
+                                Are you sure you wanna perform this action? type your current password.
                               </AlertDialogBody>
 
                               <AlertDialogFooter>

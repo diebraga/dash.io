@@ -1,3 +1,19 @@
+from rest_framework.generics import RetrieveDestroyAPIView, RetrieveAPIView
+from rest_framework import permissions
+from .models import UserAccount
+from .serializers import UserCreateSerializer
+
+class DeleteUser(RetrieveDestroyAPIView):
+    permission_classes = (permissions.IsAdminUser, )
+    queryset = UserAccount.objects.all()
+    serializer_class = UserCreateSerializer
+    pagination_class = None
+
+class UserView(RetrieveAPIView):
+    queryset = UserAccount.objects.order_by('-date_created')
+    queryset = UserAccount.objects.all()
+    serializer_class = UserCreateSerializer
+    permission_classes = (permissions.AllowAny, )
 
 
 #      user permissions

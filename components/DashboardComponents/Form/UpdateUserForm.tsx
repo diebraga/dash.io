@@ -9,10 +9,6 @@ type UpdateUserProps = {
   newPassword: string
   mudarSenha: boolean
   setMudarSenha: Dispatch<React.SetStateAction<boolean>>
-  setComfirmValue: Dispatch<any>
-  comfirmValue: any
-  blockValue: any
-  setBlockValue: Dispatch<any>
   spinner: boolean
   setEditing: Dispatch<React.SetStateAction<boolean>>
   newName: string
@@ -27,10 +23,6 @@ export function UpdateUserForm({
   newPassword,
   mudarSenha,
   setMudarSenha,
-  setComfirmValue,
-  comfirmValue,
-  blockValue,
-  setBlockValue,
   spinner,
   setEditing, 
   newName,
@@ -69,8 +61,6 @@ export function UpdateUserForm({
             type="email"
             onChange={e => setNewEmail(e.target.value)}
             value={newEmail}
-            placeholder="Email"
-            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
             required
           />
           </FormLabel>
